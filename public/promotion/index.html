@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="icon" href="/assets/img/icon.png" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link href="/output.css" rel="stylesheet" />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600;700&display=swap"
+			rel="stylesheet" />
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+		<link
+			rel="stylesheet"
+			href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+		<link
+			rel="stylesheet"
+			href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+			rel="stylesheet" />
+		<title>Content Management System | iLimits</title>
+	</head>
+	<body>
+		<div id="myContainer" class="myContainer mx-auto">
+			<nav id="navbar" class="sticky top-0 z-30 backdrop-blur-sm border-b border-gray-200">
+				<div class="flex justify-between h-16 items-center">
+					<div id="drawerToggle" class="flex gap-4 items-center">
+						<h3 class="bi bi-list font-bold icon-link-circle"></h3>
+						<img src="/assets/img/logo.svg" class="max-h-8" />
+					</div>
+					<div class="flex gap-4">
+						<h4 class="bi bi-bell icon-link-circle"></h4>
+						<h4 class="bi bi-person-circle icon-link-circle"></h4>
+					</div>
+				</div>
+			</nav>
+			<div class="flex">
+				<nav id="drawer">
+					<div class="flex flex-col h-screen px-2">
+						<a href="/context/home" class="item-menu">
+							<h5 class="bi bi-house-fill"></h5>
+							<h6>Home</h6>
+						</a>
+						<div class="flex items-center gap-4">
+							<span class="text-xs text-gray-400 font-semibold">App</span>
+							<hr class="border-b border-gray-300 w-full" />
+						</div>
+						<a href="/context/promotion" class="item-menu item-menu-focus">
+							<h5 class="bi bi-megaphone-fill"></h5>
+							<h6>Promotions</h6>
+						</a>
+						<a href="/context/footer" class="item-menu">
+							<h5 class="bi bi-c-circle-fill"></h5>
+							<h6>Footer</h6>
+						</a>
+					</div>
+				</nav>
+				<section id="mainStage" class="pl-4 w-full">
+					<div class="flex flex-col">
+						<h2 class="mb-6 font-semibold">Promotions</h2>
+						<div class="flex flex-col gap-4">
+							<div class="rows-block-header">
+								<div class="rows-block-header-left">
+									<a href="promotion/create-promotion" class="button-icon button-icon-success">
+										<span class="bi-plus"></span>
+										<h5>Create Promotion</h5>
+									</a>
+								</div>
+								<div class="rows-block-header-right">
+									<div
+										class="flex items-center justify-start border border-gray-300 h-fit rounded-md pl-2">
+										<h6 class="bi bi-search font-bold"></h6>
+										<input
+											id="inputSearchBox"
+											class="input-search-box"
+											name="search"
+											type="text"
+											placeholder="search..." />
+										<h6
+											id="inputClearSearchBox"
+											class="bi bi-x-lg font-bold hidden cursor-pointer ml-auto mr-2"></h6>
+									</div>
+									<div class="rows-block-header-nav ml-auto">
+										<h6>2 of 123</h6>
+										<a href="#" class="button-icon-info">
+											<span class="bi bi-arrow-left-short"></span>
+										</a>
+										<a href="#" class="button-icon-info">
+											<span class="bi bi-arrow-right-short"></span>
+										</a>
+									</div>
+								</div>
+							</div>
+							<div class="rows-block">
+								<h4>What is Lorem Ipsum?</h4>
+								<p>
+									Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
+									Ipsum has been the industry's standard dummy text ever since the 1500s, he
+									industry's standard dummy text ever since the 1500s, he industry's standard dummy
+									text ever since the 1500s,
+								</p>
+								<h6>Where does it come from?</h6>
+								<div>
+									<span class="mybadge mybadge-primary">Published</span>
+									<h6>Last Modified by Admin @ Jan 12, 2024</h6>
+								</div>
+							</div>
+							<div class="rows-block">
+								<h4>The standard Lorem Ipsum passage, used since the 1500s</h4>
+								<p>
+									There are many variations of passages of Lorem Ipsum available, but the majority
+									have suffered alteration in some form, by injected humour, or randomised words
+									which don't look even slightly believable. If you are going to use a passage of
+									Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the
+									middle of text. All the Lorem Ipsum generators on the Internet tend to repeat
+									predefined chunks as necessary, making this the first true generator on the
+									Internet.
+								</p>
+								<h6>Where can I get some?</h6>
+								<div>
+									<span class="mybadge">Draft</span>
+									<h6>Last Modified by Admin @ Jan 12, 2024</h6>
+								</div>
+							</div>
+						</div>
+					</div>
+				</section>
+			</div>
+		</div>
+	</body>
+	<script src="/js/common/commonUtils.js"></script>
+	<script src="/js/promotion/index.js"></script>
+</html>

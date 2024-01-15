@@ -21,15 +21,22 @@ module.exports = {
 			"2xl": "1536px",
 		},
 		extend: {
+			fontFamily: {
+				sans: ['"Noto Sans"', ...defaultTheme.fontFamily.sans],
+			},
 			colors: {
 				baseGreen: "hsl(115, 43%, 52%)",
 				baseOrange: "hsl(36, 97%, 62%)",
+				bgDefault: "#EDF2F9",
 			},
-			maxWidth: {
-				"1/3": "33%",
-				10: "10px",
+			maxHeight: {
+				// tailwind point : rem
+				// 4point : 1rem
+				108: "27rem",
+				180: "45rem",
 			},
 			height: {
+				108: "27rem",
 				480: "30rem",
 				640: "40rem",
 				768: "48rem",
@@ -41,6 +48,7 @@ module.exports = {
 				7680: "480rem",
 			},
 			width: {
+				192: "48rem",
 				480: "30rem",
 				1200: "75rem",
 				4800: "300rem",

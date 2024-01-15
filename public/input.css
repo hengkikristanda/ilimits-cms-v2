@@ -5,6 +5,7 @@
 @layer base {
 	html {
 		font-family: "Noto-sans", system-ui, sans-serif;
+		font-size: 16px;
 	}
 	h1 {
 		@apply text-4xl;
@@ -34,22 +35,35 @@
 		@apply text-base;
 	}
 	body {
-		margin: 0;
-		padding: 0;
+		@apply m-0 p-0 bg-bgDefault text-gray-500;
 	}
 }
 
 @layer components {
+	input {
+		@apply border border-gray-300 rounded-md py-2 px-4 focus:outline-baseGreen text-xs text-black font-normal;
+	}
+	label {
+		@apply font-semibold text-gray-500;
+	}
+	textarea {
+		@apply border border-gray-300 px-4 rounded-md py-2 focus:outline-baseGreen h-72 min-h-72;
+	}
+
+	.stage-container {
+		@apply flex;
+	}
+
+	.input-search-box {
+		@apply outline-none focus:outline-none border-0;
+	}
+
 	.login-box {
 		@apply bg-white max-w-96 mx-auto px-4 mt-20 pb-12 flex flex-col justify-center border border-gray-300;
-	}	
-
-	.input-box {
-		@apply border border-gray-300 rounded-md py-2 px-4 focus:outline-baseGreen text-xs text-gray-500;
 	}
 
 	.myContainer {
-		/* @apply px-2 sm:px-8 2xl:px-10; */
+		@apply px-2 md:px-8 2xl:px-10 max-w-screen-2xl;
 	}
 	.tombol {
 		@apply text-white text-center flex justify-center items-center bg-baseGreen px-4 py-2 text-sm hover:bg-baseOrange w-fit min-w-[10rem] rounded-md font-semibold;
@@ -84,8 +98,11 @@
 	.subtext-info {
 		@apply text-gray-600 text-xs;
 	}
+	.subtext-primary {
+		@apply text-baseGreen text-xs font-semibold;
+	}
 	.subtext-success {
-		@apply text-baseGreen text-sm font-semibold;
+		@apply text-blue-500 text-xs font-semibold;
 	}
 	.subtext-danger {
 		@apply text-red-500 text-sm font-semibold;
@@ -123,19 +140,101 @@
 	.thumbnailContainer {
 		@apply grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 py-4;
 	}
+
+	.button-icon {
+		@apply flex items-center justify-center border border-gray-300 w-fit h-fit px-2 py-px rounded-md shadow-gray-300 shadow-sm hover:shadow-md active:shadow-none cursor-pointer gap-1;
+	}
+	.button-icon > span {
+		@apply font-bold text-base;
+	}
+	.button-icon > h5 {
+		@apply font-semibold;
+	}
+
+	.button-icon-info {
+		@apply active:bg-gray-300 active:border-gray-300;
+	}
+	.button-icon-info > span,
+	.button-icon-info > h5 {
+		@apply text-info;
+	}
+
+	.button-icon-success {
+		@apply active:bg-blue-100 active:border-blue-100;
+	}
+	.button-icon-success > span,
+	.button-icon-success > h5 {
+		@apply text-success;
+	}
+
+	.button-icon-primary {
+		@apply active:bg-baseGreen/30 active:bg-baseGreen/30;
+	}
+	.button-icon-primary > span,
+	.button-icon-primary > h5 {
+		@apply text-primary;
+	}
+
+	.button-icon-danger {
+		@apply active:bg-red-100 active:border-red-100;
+	}
+	.button-icon-danger > span,
+	.button-icon-danger > h5 {
+		@apply text-danger;
+	}
 }
 
 @layer utilities {
+	.previewContainer a {
+		@apply text-link;
+	}
+	.previewContainer h1,
+	.previewContainer h2,
+	.previewContainer h3,
+	.previewContainer h4 {
+		@apply py-4;
+	}
+
 	.input-label {
 		@apply text-sm mb-2 text-gray-500;
 	}
-	
+
+	.icon-link-circle {
+		@apply cursor-pointer hover:bg-gray-300 w-10 h-10 min-w-10 min-h-10 rounded-full flex items-center justify-center text-gray-500;
+	}
+
+	.item-menu {
+		@apply flex gap-4 my-2 px-2 py-px items-center justify-start cursor-pointer rounded-full;
+	}
+	.item-menu h5,
+	.item-menu h6 {
+		@apply font-semibold text-gray-600;
+	}
+	.item-menu:hover h5,
+	.item-menu:hover h6,
+	.item-menu-focus h5,
+	.item-menu-focus h6 {
+		@apply text-baseGreen;
+	}
+
 	.text-link {
 		@apply text-baseGreen font-semibold hover:underline cursor-pointer;
 	}
 
 	.text-link-danger {
 		@apply text-red-500 font-semibold hover:underline;
+	}
+	.text-success {
+		@apply text-blue-500;
+	}
+	.text-info {
+		@apply text-gray-500;
+	}
+	.text-primary {
+		@apply text-baseGreen;
+	}
+	.text-danger {
+		@apply text-red-500;
 	}
 
 	.menu-link {
@@ -183,6 +282,81 @@
 
 	.cardItem {
 		@apply w-full sm:max-w-xs hover:border-b-8 hover:border-baseGreen;
+	}
+
+	.rows-block-header {
+		@apply flex w-full bg-white shadow-gray-300 shadow-xl rounded-md p-4 items-center justify-between gap-4;
+	}
+	.rows-block-header-left {
+		@apply flex justify-between items-center gap-2;
+	}
+	.rows-block-header-right {
+		@apply flex justify-between items-center gap-2;
+	}
+	.rows-block-header-nav {
+		@apply flex items-center justify-between gap-2;
+	}
+	.rows-block-header-nav > h6 {
+		@apply text-xs;
+	}
+	.rows-block-header-nav > a {
+		@apply button-icon;
+	}
+
+	.rows-block {
+		@apply flex flex-col w-full gap-2 bg-white shadow-gray-300 shadow-xl rounded-md p-4 cursor-pointer border-b-2 hover:border-baseGreen;
+	}
+	.rows-block > h4 {
+		@apply font-bold;
+	}
+	.rows-block > p {
+		@apply line-clamp-2;
+	}
+	.rows-block > h6 {
+		@apply text-xs;
+	}
+	.rows-block > div {
+		@apply flex justify-between items-end;
+	}
+	.rows-block > div > h6 {
+		@apply subtext-success;
+	}
+
+	.form-block {
+		@apply flex flex-col w-full gap-2 bg-white shadow-gray-300 shadow-xl rounded-md py-4;
+	}
+	.form-block > h4,
+	.form-block > div {
+		@apply font-semibold px-4 text-gray-500;
+	}
+	.form-block-container {
+		@apply flex flex-col bg-gray-50 gap-2 py-4;
+	}
+
+	.form-canvas {
+		@apply flex w-full bg-white shadow-gray-300 shadow-xl rounded-md p-2 justify-center;
+	}
+	.form-canvas > div {
+		@apply flex min-w-[48rem] min-h-[27rem] cursor-pointer justify-center;
+	}
+	.form-canvas img {
+		@apply w-full object-cover max-w-screen-md max-h-[27rem];
+	}
+	.form-canvas input {
+		@apply hidden;
+	}
+
+	.mybadge {
+		@apply bg-gray-500 text-white w-fit py-1 px-2.5 flex rounded-full text-center items-center font-semibold text-xs;
+	}
+	.mybadge-primary {
+		@apply bg-baseGreen;
+	}
+	.mybadge-success {
+		@apply bg-blue-500;
+	}
+	.mybadge-danger {
+		@apply bg-red-500;
 	}
 }
 
@@ -270,6 +444,19 @@
 	height: 2rem;
 	margin-top: 15px;
 	margin-bottom: 15px;
+	border: 0.2rem solid #fff;
+	border-bottom-color: #59b950;
+	border-radius: 50%;
+	display: inline-block;
+	box-sizing: border-box;
+	animation: rotation 0.5s linear infinite;
+}
+
+.loader6 {
+	width: 0.8rem;
+	height: 0.8rem;
+	margin-top: 5px;
+	margin-bottom: 5px;
 	border: 0.2rem solid #fff;
 	border-bottom-color: #59b950;
 	border-radius: 50%;
@@ -432,4 +619,22 @@
 	width: 50%; /* Adjust the width to create a 50% underline */
 	height: 6px; /* Set the desired height for the underline */
 	background-color: hsl(115, 43%, 52%);
+}
+
+#drawer {
+	width: 13rem;
+	min-width: 3rem;
+	transition: width 0.1s ease-in-out;
+}
+
+#imageDataContainer img {
+	height: 100%;
+	max-height: 50rem;
+	width: 100%;
+	object-fit: cover;
+	margin: 2rem 0;
+}
+
+#error-message {
+	display: none;
 }

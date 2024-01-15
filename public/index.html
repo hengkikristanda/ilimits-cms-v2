@@ -27,15 +27,19 @@
 				</div>
 				<div class="w-full md:w-1/2">
 					<div class="login-box">
-						<form method="post" action="/">
+						<form id="loginForm" method="post" action="/auth/login">
 							<div class="flex flex-col justify-center py-12">
 								<img src="assets/img/logo.svg" class="w-3/4 mx-auto" />
-								<h5 class="mx-auto subtext-success">Content Management System</h5>
+								<h5 class="mx-auto subtext-primary">Content Management System</h5>
+							</div>
+							<div class="flex mb-2">
+								<p class="subtext-danger" id="error-message"></p>
 							</div>
 							<div class="flex flex-col mb-4">
 								<label class="input-label">Username</label>
 								<input
 									type="text"
+									id="username"
 									name="username"
 									class="input-box"
 									placeholder="Enter your username"
@@ -45,12 +49,13 @@
 								<label class="input-label">Password</label>
 								<input
 									type="password"
+									id="password"
 									name="password"
 									class="input-box"
 									placeholder="Enter your password"
 									required />
 							</div>
-							<button class="tombol-block mb-8">Login</button>
+							<button type="submit" class="tombol-block mb-8">Login</button>
 							<a
 								href="reset-password.html"
 								class="flex w-full justify-center subtext-info hover:underline"
@@ -62,4 +67,6 @@
 			</div>
 		</div>
 	</body>
+	<script src="/js/common/commonUtils.js"></script>
+	<script src="/js/index.js"></script>
 </html>

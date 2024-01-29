@@ -29,39 +29,9 @@
 	</head>
 	<body>
 		<div id="myContainer" class="myContainer mx-auto">
-			<nav id="navbar" class="sticky top-0 z-30 backdrop-blur-sm border-b border-gray-200">
-				<div class="flex justify-between h-16 items-center">
-					<div id="drawerToggle" class="flex gap-4 items-center">
-						<h3 class="bi bi-list font-bold icon-link-circle"></h3>
-						<img src="/assets/img/logo.svg" class="max-h-8" />
-					</div>
-					<div class="flex gap-4">
-						<h4 class="bi bi-bell icon-link-circle"></h4>
-						<h4 class="bi bi-person-circle icon-link-circle"></h4>
-					</div>
-				</div>
-			</nav>
+			<nav id="navbar" class="sticky top-0 z-30 backdrop-blur-sm border-b border-gray-200"></nav>
 			<div class="stage-container">
-				<nav id="drawer">
-					<div class="flex flex-col h-screen px-2">
-						<a href="/context/home" class="item-menu">
-							<h5 class="bi bi-house-fill"></h5>
-							<h6>Home</h6>
-						</a>
-						<div class="flex items-center gap-4">
-							<h6 class="text-xs text-gray-400 font-semibold">App</h6>
-							<hr class="border-b border-gray-300 w-full" />
-						</div>
-						<a href="/context/promotion" class="item-menu item-menu-focus">
-							<h5 class="bi bi-megaphone-fill"></h5>
-							<h6>Promotions</h6>
-						</a>
-						<a href="/context/footer" class="item-menu">
-							<h5 class="bi bi-c-circle-fill"></h5>
-							<h6>Footer</h6>
-						</a>
-					</div>
-				</nav>
+				<nav id="drawer"></nav>
 				<section id="mainStage" class="pl-4 w-full">
 					<div class="flex flex-col">
 						<h2 class="mb-6 font-semibold">Create Promotions</h2>
@@ -153,7 +123,7 @@
 											</div>
 										</div>
 										<label>Description</label>
-										<textarea id="myTextArea">Content</textarea>
+										<textarea id="myTextArea">Write your article here...</textarea>
 										<label>Call to Action Button Link</label>
 										<input
 											id="ctaButtonLink"
@@ -193,5 +163,6 @@
 		</div>
 	</body>
 	<script src="/js/common/commonUtils.js"></script>
+	<script src="/js/common/commonComponents.js"></script>
 	<script src="/js/promotion/createPromotion.js"></script>
 </html>

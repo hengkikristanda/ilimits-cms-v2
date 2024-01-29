@@ -1,24 +1,31 @@
-// middlewares/authMiddleware.js
+// authenticateMiddleware.js
 const jwt = require("jsonwebtoken");
 
-exports.verifyToken = (req, res, next) => {
+const isAuthenticated = (req, res, next) => {
 	try {
-		// Retrieve the JWT token from the HTTP-only cookie
-		const token = req.cookies.token;
-
+		const token = req.headers.authorization || req.cookies.access_token;
 		if (!token) {
-			return res.status(401).json({ error: "Unauthorized" });
+			throw new Error("Unauthorized: No token provided");
 		}
 
-		// Verify the token
+		// Verify the token using the secret key
 		const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-		// Attach the user ID to the request object for further processing
-		req.userId = decoded.userId;
+		// Check expiration
+		if (decoded.expiresIn <= Date.now() / 1000) {
+			throw new Error("Unauthorized: Token has expired");
+		}
 
+		// Attach the user information to the request for further handling in route handlers
+		req.user = decoded;
+
+		// Move to the next middleware or route handler
 		next();
 	} catch (error) {
 		console.error(error);
-		return res.status(401).json({ error: "Unauthorized" });
+		const errorMessage = "401";
+		return res.redirect(`/?error=${encodeURIComponent(errorMessage)}`);
 	}
 };
+
+module.exports = isAuthenticated;

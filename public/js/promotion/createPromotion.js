@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", () => {
-	handleToogleDrawer();
 	handleCanvasAttachImage();
 
 	const discardChangesButton = document.getElementById("discardChangesButton");
@@ -81,4 +80,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
 		alertModal.showModal();
 	});
+
+	const navbar = document.getElementById("navbar");
+	navbar.innerHTML = renderNavBar();
+
+	const drawer = document.getElementById("drawer");
+	drawer.innerHTML = renderDrawer("promotions");
+
+	handleToogleDrawer();
 });

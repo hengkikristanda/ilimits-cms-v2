@@ -1,6 +1,6 @@
 tinymce.init({
 	selector: "#myTextArea",
-	plugins: "image link lists media table checklist",
+	plugins: "image link lists media table",
 	toolbar:
 		"blocks fontsize | bold italic underline strikethrough | link image media table mergetags | align lineheight | tinycomments | checklist numlist bullist indent outdent removeformat",
 	automatic_uploads: true,

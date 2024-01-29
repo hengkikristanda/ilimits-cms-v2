@@ -1,42 +1,56 @@
+async function handleLogin(event) {
+	const loginForm = document.getElementById("loginForm");
+
+	const submitButton = loginForm.querySelector('button[type="submit"]');
+	submitButton.disabled = true;
+	submitButton.innerHTML = "<span class='loaderSmall'></span>";
+	event.preventDefault();
+
+	const username = loginForm.querySelector("#username").value;
+	const password = loginForm.querySelector("#password").value;
+
+	try {
+		const options = {
+			timeout: 30000,
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({ username, password }),
+		};
+
+		const response = await fetchWithTimeout("/auth/login", options);
+
+		if (!response.ok) {
+			const responseData = await response.json();
+			throw new Error(responseData.message);
+		} else {
+			window.location.assign(response.url);
+		}
+	} catch (error) {
+		enableButton(submitButton, "Login");
+		if (error.name === "AbortError") {
+			renderInfoMessage(loginForm, getHttpStatusMessage(408), "danger");
+		} else {
+			renderInfoMessage(loginForm, error.message, "danger");
+		}
+	}
+}
+
 document.addEventListener("DOMContentLoaded", () => {
 	const loginForm = document.getElementById("loginForm");
-	loginForm.addEventListener("submit", async (event) => {
-		const submitButton = loginForm.querySelector('button[type="submit"]');
-		submitButton.disabled = true;
-		submitButton.innerHTML = "<span class='loader6'></span>";
-		event.preventDefault();
+	loginForm.addEventListener("submit", handleLogin);
 
-		const username = document.getElementById("username").value;
-		const password = document.getElementById("password").value;
-
-		try {
-			const response = await fetch("/auth/login", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify({ username, password }),
-			});
-
-			const data = await response.json();
-
-			setTimeout(() => {
-				if (response.ok) {
-					window.location.href = "/context/home/"; // Redirect to dashboard page
-				} else {
-					const errorMessage = data.message || "Login failed";
-					document.getElementById("error-message").innerText = errorMessage;
-					document.getElementById("error-message").style.display = "block";
-
-					submitButton.innerHTML = "Login";
-					submitButton.disabled = false;
-				}
-			}, 500);
-		} catch (error) {
-			console.error("Error:", error);
-			document.getElementById("error-message").innerText =
-				"An error occurred. Please try again later.";
-			document.getElementById("error-message").style.display = "block";
+	const errorCode = new URLSearchParams(window.location.search).get("error");
+	let errorMessage = getHttpStatusMessage(errorCode);
+	if (errorMessage) {
+		let badgeType = "danger";
+		if (errorCode == 403) {
+			errorMessage += ": Account is locked!";
+		} else if (errorCode == 200) {
+			badgeType = "success";
+			errorMessage = "Password successfully updated. Please login again."
 		}
-	});
+		renderInfoMessage(loginForm, errorMessage, badgeType);
+	}
 });

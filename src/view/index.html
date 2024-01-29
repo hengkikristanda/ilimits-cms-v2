@@ -3,6 +3,7 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="icon" type="image/x-icon" href="assets/img/icon.png" />
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 		<link href="output.css" rel="stylesheet" />
@@ -20,37 +21,52 @@
 		<title>CMS - iLimits - The Best International Online Forex Broker</title>
 	</head>
 	<body>
-		<div class="myContainer h-screen">
+		<div class="myContainer">
 			<div class="flex">
 				<div class="hidden md:flex md:w-1/2">
 					<img src="assets/img/pexels-adrien-olichon-3137064.jpg" class="max-h-screen w-full" />
 				</div>
 				<div class="w-full md:w-1/2">
 					<div class="login-box">
-						<form method="post" action="/">
+						<form id="loginForm">
 							<div class="flex flex-col justify-center py-12">
 								<img src="assets/img/logo.svg" class="w-3/4 mx-auto" />
 								<h5 class="mx-auto subtext-primary">Content Management System</h5>
 							</div>
+							<div id="info-message" class="alert-block">ERROR</div>
 							<div class="flex flex-col mb-4">
-								<label class="input-label"
-									>Enter your email and we'll send you a link to get back into your account.</label
-								>
+								<label class="input-label">Login with Email</label>
 								<input
 									type="email"
-									name="email"
+									id="username"
+									name="username"
 									class="input-box"
-									placeholder="Enter your email"
+									placeholder="Enter your email address"
+									autocomplete="username"
 									required />
 							</div>
-							<button class="tombol-block mb-8">Request Reset Password</button>
-							<a href="index.html" class="flex w-full justify-center subtext-info hover:underline"
-								>Back to login</a
-							>
+							<div class="flex flex-col mb-4">
+								<label class="input-label">Password</label>
+								<input
+									type="password"
+									id="password"
+									name="password"
+									class="input-box"
+									autocomplete="current-password"
+									placeholder="Enter your password"
+									required />
+							</div>
+							<button id="submitLoginButton" type="submit" class="tombol-block mb-8">Login</button>
+							<div class="flex w-full justify-center">
+								<a href="/resetPassword" class="text-link text-xs">Forgot Password?</a>
+							</div>
 						</form>
 					</div>
 				</div>
 			</div>
 		</div>
 	</body>
+	<script src="/js/common/commonUtils.js"></script>
+	<script src="/js/common/commonComponents.js"></script>
+	<script src="/js/index.js"></script>
 </html>

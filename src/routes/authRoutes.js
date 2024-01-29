@@ -3,13 +3,15 @@ const path = require("path");
 const multer = require("multer");
 const router = express.Router();
 
-const usersController = require("../controller/usersController");
-const authMiddleware = require("../middlewares/authMiddleware");
+const authController = require("../controller/authController");
+const isAuthenticated = require("../middlewares/authMiddleware");
 
-router.use(authMiddleware.verifyToken);
-
-router.post("/register", usersController.register);
-router.post("/login", usersController.login);
-router.post("/logout", usersController.logout);
+router.post("/login", authController.login);
+router.get("/logout", authController.logout);
+router.post("/requestResetPassword", authController.resetPassword);
+router.post("/updatePassword", isAuthenticated, authController.updatePassword);
+router.post("/updateUser", isAuthenticated, authController.updateUser);
+// router.post("/register", usersController.register);
+// router.post("/logout", usersController.logout);
 
 module.exports = router;

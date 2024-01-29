@@ -50,6 +50,13 @@
 		@apply border border-gray-300 px-4 rounded-md py-2 focus:outline-baseGreen h-72 min-h-72;
 	}
 
+	.mainStage {
+		@apply pl-4 w-full;
+	}
+	.mainStage h1 {
+		@apply mb-6 font-semibold;
+	}
+
 	.stage-container {
 		@apply flex;
 	}
@@ -63,7 +70,7 @@
 	}
 
 	.myContainer {
-		@apply px-2 md:px-8 2xl:px-10 max-w-screen-2xl;
+		@apply px-4 md:px-8 2xl:px-10 max-w-screen-2xl mx-auto;
 	}
 	.tombol {
 		@apply text-white text-center flex justify-center items-center bg-baseGreen px-4 py-2 text-sm hover:bg-baseOrange w-fit min-w-[10rem] rounded-md font-semibold;
@@ -141,6 +148,19 @@
 		@apply grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 py-4;
 	}
 
+	.action-button {
+		@apply flex justify-center items-center text-center px-4 py-2 text-sm w-fit rounded-md font-semibold;
+	}
+	.action-button-primary {
+		@apply text-white bg-baseGreen hover:bg-baseOrange;
+	}
+	.action-button-disabled {
+		@apply border border-gray-300 bg-gray-200 text-gray-300 cursor-default;
+	}
+	.action-button-block {
+		@apply w-full;
+	}
+
 	.button-icon {
 		@apply flex items-center justify-center border border-gray-300 w-fit h-fit px-2 py-px rounded-md shadow-gray-300 shadow-sm hover:shadow-md active:shadow-none cursor-pointer gap-1;
 	}
@@ -149,6 +169,9 @@
 	}
 	.button-icon > h5 {
 		@apply font-semibold;
+	}
+	.button-icon-disabled {
+		@apply bg-gray-300 cursor-auto;
 	}
 
 	.button-icon-info {
@@ -323,14 +346,14 @@
 	}
 
 	.form-block {
-		@apply flex flex-col w-full gap-2 bg-white shadow-gray-300 shadow-xl rounded-md py-4;
+		@apply flex flex-col gap-2 bg-white shadow-gray-300 shadow-xl rounded-md py-4;
 	}
 	.form-block > h4,
 	.form-block > div {
 		@apply font-semibold px-4 text-gray-500;
 	}
 	.form-block-container {
-		@apply flex flex-col bg-gray-50 gap-2 py-4;
+		@apply flex flex-col bg-gray-100 gap-2 py-4;
 	}
 
 	.form-canvas {
@@ -348,6 +371,9 @@
 
 	.mybadge {
 		@apply bg-gray-500 text-white w-fit py-1 px-2.5 flex rounded-full text-center items-center font-semibold text-xs;
+	}
+	.mybadge-xs {
+		@apply bg-gray-500 text-white w-fit px-2.5 flex rounded-full text-center items-center font-semibold text-xs;
 	}
 	.mybadge-primary {
 		@apply bg-baseGreen;
@@ -452,7 +478,7 @@
 	animation: rotation 0.5s linear infinite;
 }
 
-.loader6 {
+.loaderSmall {
 	width: 0.8rem;
 	height: 0.8rem;
 	margin-top: 5px;
@@ -635,6 +661,24 @@
 	margin: 2rem 0;
 }
 
-#error-message {
+.alert-block {
+	margin-bottom: 0.5rem;
+	border-radius: 0.375rem;
+	min-height: 2rem;
+	align-items: center;
+	padding: 0.5rem;
+	font-size: 0.75rem;
+	line-height: 1rem;
 	display: none;
+}
+
+.alert-block-danger {
+	background-color: rgb(254 226 226);
+	border: solid 1px rgb(254 202 202);
+	color: rgb(239 68 68);
+}
+.alert-block-success {
+	background-color: rgb(219 234 254);
+	border: solid 1px rgb(191 219 254);
+	color: rgb(59 130 246);
 }

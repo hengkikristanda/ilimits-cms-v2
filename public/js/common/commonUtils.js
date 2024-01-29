@@ -154,3 +154,158 @@ async function handleSubmit() {
 		// Handle errors
 	}
 }
+
+function getHttpStatusMessage(statusCode) {
+	const statusMessages = {
+		100: "Continue",
+		101: "Switching Protocols",
+		200: "OK",
+		201: "Created",
+		204: "No Content",
+		400: "Bad Request",
+		401: "Authentication Required",
+		403: "Forbidden",
+		404: "Not Found",
+		408: "Request Timeout",
+		500: "Internal Server Error",
+		503: "Service Unavailable",
+	};
+
+	return statusMessages[statusCode] || null;
+}
+
+async function fetchWithTimeout(url, options) {
+	const { timeout = 30000 } = options;
+
+	const controller = new AbortController();
+	const id = setTimeout(() => controller.abort(), timeout);
+	options.signal = controller.signal;
+
+	const response = await fetch(url, options);
+	clearTimeout(id);
+	return response;
+}
+
+function formatDateToCustomString(dateString) {
+	return new Date(dateString).toLocaleString("en-US", {
+		weekday: "long",
+		day: "numeric",
+		month: "long",
+		year: "numeric",
+		hour: "numeric",
+		minute: "numeric",
+		second: "numeric",
+	});
+}
+
+function sortTable(n, tableId, isDateTime = false) {
+	var table,
+		rows,
+		switching,
+		i,
+		x,
+		y,
+		shouldSwitch,
+		dir,
+		switchcount = 0;
+	table = document.getElementById(tableId);
+	switching = true;
+	//Set the sorting direction to ascending:
+	dir = "asc";
+	/*Make a loop that will continue until
+	no switching has been done:*/
+	while (switching) {
+		//start by saying: no switching is done:
+		switching = false;
+		rows = table.rows;
+		/*Loop through all table rows (except the
+	  first, which contains table headers):*/
+		for (i = 1; i < rows.length - 1; i++) {
+			//start by saying there should be no switching:
+			shouldSwitch = false;
+			/*Get the two elements you want to compare,
+		one from current row and one from the next:*/
+			x = rows[i].getElementsByTagName("TD")[n];
+			y = rows[i + 1].getElementsByTagName("TD")[n];
+			/*check if the two rows should switch place,
+		based on the direction, asc or desc:*/
+			if (!isDateTime) {
+				if (dir == "asc") {
+					if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+						//if so, mark as a switch and break the loop:
+						shouldSwitch = true;
+						break;
+					}
+				} else if (dir == "desc") {
+					if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+						//if so, mark as a switch and break the loop:
+						shouldSwitch = true;
+						break;
+					}
+				}
+			} else {
+				let dateA = parseCustomDate(x.innerHTML);
+				let dateB = parseCustomDate(y.innerHTML);
+
+				if (dir == "asc") {
+					if (dateA - dateB > 0) {
+						//if so, mark as a switch and break the loop:
+						shouldSwitch = true;
+						break;
+					}
+				} else if (dir == "desc") {
+					if (dateA - dateB < 0) {
+						//if so, mark as a switch and break the loop:
+						shouldSwitch = true;
+						break;
+					}
+				}
+			}
+		}
+		if (shouldSwitch) {
+			/*If a switch has been marked, make the switch
+		and mark that a switch has been done:*/
+			rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+			switching = true;
+			//Each time a switch is done, increase this count by 1:
+			switchcount++;
+		} else {
+			/*If no switching has been done AND the direction is "asc",
+		set the direction to "desc" and run the while loop again.*/
+			if (switchcount == 0 && dir == "asc") {
+				dir = "desc";
+				switching = true;
+			}
+		}
+	}
+}
+
+function parseCustomDate(dateString) {
+	var regex = /(\w+), (\w+) (\d+), (\d+) at (\d+):(\d+):(\d+) (\w+)/;
+	var [, day, month, dayNum, year, hour, minute, second, meridian] = dateString.match(regex);
+
+	var monthNames = [
+		"January",
+		"February",
+		"March",
+		"April",
+		"May",
+		"June",
+		"July",
+		"August",
+		"September",
+		"October",
+		"November",
+		"December",
+	];
+
+	var monthIndex = monthNames.indexOf(month);
+
+	if (meridian === "PM" && parseInt(hour, 10) !== 12) {
+		hour = (parseInt(hour, 10) + 12).toString();
+	} else if (meridian === "AM" && parseInt(hour, 10) === 12) {
+		hour = "00";
+	}
+
+	return new Date(year, monthIndex, dayNum, hour, minute, second);
+}

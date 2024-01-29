@@ -2,7 +2,7 @@
 const defaultTheme = require("tailwindcss/defaultTheme");
 
 module.exports = {
-	content: ["./public/**/*.{html,js}"],
+	content: ["./src/view/**/*.{html,js}", "./public/js/**/*.{html,js}"],
 	theme: {
 		container: {
 			padding: {
@@ -28,6 +28,8 @@ module.exports = {
 				baseGreen: "hsl(115, 43%, 52%)",
 				baseOrange: "hsl(36, 97%, 62%)",
 				bgDefault: "#EDF2F9",
+				danger: "#ef4444",
+				bgAlert: "#fecaca",
 			},
 			maxHeight: {
 				// tailwind point : rem

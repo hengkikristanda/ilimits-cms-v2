@@ -23,18 +23,21 @@ const register = async (req, res) => {
 const login = async (req, res) => {
 	try {
 		const { username, password } = req.body;
-		const user = await usersServices.findByUserId(username);
-		if (!user) {
-			return res.status(404).json({ message: "User not found" });
-		}
 
-		const validPassword = await usersServices.validate(password, user.encodedPassword);
-		if (!validPassword) {
-			return res.status(401).json({ message: "Invalid username or password" });
-		}
-		const token = await usersServices.generateToken(user);
+		console.log(username);
 
-		res.cookie("token", token, { httpOnly: true });
+		// const user = await usersServices.findByUserId(username);
+		// if (!user) {
+		// 	return res.status(404).json({ message: "User not found" });
+		// }
+
+		// const validPassword = await usersServices.validate(password, user.encodedPassword);
+		// if (!validPassword) {
+		// 	return res.status(401).json({ message: "Invalid username or password" });
+		// }
+		// const token = await usersServices.generateToken(user);
+
+		// res.cookie("token", token, { httpOnly: true });
 
 		res.status(200).json({ message: "Login successful", token });
 	} catch (error) {

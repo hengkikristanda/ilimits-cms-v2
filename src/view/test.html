@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="styles.css" />
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+			integrity="sha512-FYqXIrNtSLq+UPd4LRwBYN0E5HHKIErgB/JLl4eQFuf1C52eTntcjs5oT2aSBEJVL2ywApfT3E27uEXPhhw7IA=="
+			crossorigin="anonymous" />
+		<title>Drag and Drop File Upload</title>
+		<style>
+			body {
+				font-family: Arial, sans-serif;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				height: 100vh;
+				margin: 0;
+			}
+
+			#drop-area {
+				border: 2px dashed #ccc;
+				border-radius: 8px;
+				padding: 20px;
+				text-align: center;
+			}
+
+			#drop-area.highlight {
+				background-color: #f0f8ff; /* Add your desired highlight color here */
+			}
+
+			#fileList {
+				list-style-type: none;
+				padding: 0;
+			}
+
+			#fileList li {
+				margin-bottom: 8px;
+			}
+			/* Add styles for the close icon */
+			.close-icon {
+				margin-left: 8px;
+				color: #cc0000; /* Change the color as needed */
+				cursor: pointer;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="drop-area">
+			<p>Drag &amp; Drop files here or click to select</p>
+			<input type="file" id="fileInput" multiple />
+			<ul id="fileList"></ul>
+		</div>
+
+		<script>
+			const dropArea = document.getElementById("drop-area");
+			const fileInput = document.getElementById("fileInput");
+			const fileList = document.getElementById("fileList");
+
+			// Prevent default behavior for drag and drop
+			["dragenter", "dragover", "dragleave", "drop"].forEach((eventName) => {
+				dropArea.addEventListener(eventName, preventDefaults, false);
+				document.body.addEventListener(eventName, preventDefaults, false);
+			});
+
+			// Highlight drop area when file is dragged over
+			["dragenter", "dragover"].forEach((eventName) => {
+				dropArea.addEventListener(eventName, highlight, false);
+			});
+
+			["dragleave", "drop"].forEach((eventName) => {
+				dropArea.addEventListener(eventName, unhighlight, false);
+			});
+
+			// Handle dropped files
+			dropArea.addEventListener("drop", handleDrop, false);
+
+			function preventDefaults(e) {
+				e.preventDefault();
+				e.stopPropagation();
+			}
+
+			function highlight() {
+				dropArea.classList.add("highlight");
+			}
+
+			function unhighlight() {
+				dropArea.classList.remove("highlight");
+			}
+
+			function handleDrop(e) {
+				const dt = e.dataTransfer;
+				const files = dt.files;
+
+				handleFiles(files);
+			}
+
+			function handleFiles(files) {
+				files = [...files];
+				files.forEach(uploadFile);
+			}
+
+			function removeFile(fileItem) {
+				fileList.removeChild(fileItem);
+			}
+
+			function uploadFile(file) {
+				const li = document.createElement("li");
+				li.textContent = file.name;
+
+				// Add a close icon to remove the file
+				const closeIcon = document.createElement("i");
+				closeIcon.className = "fas fa-times-circle close-icon";
+				closeIcon.addEventListener("click", () => removeFile(li));
+				li.appendChild(closeIcon);
+
+				fileList.appendChild(li);
+			}
+
+			// Trigger file input when area is clicked
+			dropArea.addEventListener("click", () => {
+				fileInput.click();
+			});
+
+			// Handle files selected through file input
+			fileInput.addEventListener("change", () => {
+				handleFiles(fileInput.files);
+			});
+		</script>
+	</body>
+</html>

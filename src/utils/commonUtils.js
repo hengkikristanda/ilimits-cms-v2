@@ -1,3 +1,6 @@
+const fs = require("fs");
+const path = require("path");
+
 const mimeToExtension = {
 	"image/jpeg": "jpg",
 	"image/png": "png",
@@ -28,7 +31,49 @@ const uploadFile = async (req, res) => {
 	}
 };
 
+function validateInputPassword(input) {
+	return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/.test(input);
+}
+
+function calculateFolderSize(folderPath) {
+	let totalSize = 0;
+	const initialStorageGB = 1;
+
+	function calculateFileSize(filePath) {
+		const stats = fs.statSync(filePath);
+		return stats.size;
+	}
+
+	function calculateFolderSizeRecursively(folderPath) {
+		const files = fs.readdirSync(folderPath);
+
+		for (const file of files) {
+			const filePath = path.join(folderPath, file);
+			if (fs.statSync(filePath).isDirectory()) {
+				calculateFolderSizeRecursively(filePath);
+			} else {
+				totalSize += calculateFileSize(filePath);
+			}
+		}
+	}
+
+	calculateFolderSizeRecursively(folderPath);
+
+	// Convert totalSize to gigabytes
+	const totalSizeGB = totalSize / (1024 * 1024 * 1024);
+
+	console.log(`Total size of ${folderPath}: ${totalSizeGB.toFixed(2)} GB`);
+
+	// Calculate remaining storage
+	const remainingStorageGB = initialStorageGB - totalSizeGB;
+	console.log(`Remaining storage: ${remainingStorageGB.toFixed(15)} GB`);
+
+	return remainingStorageGB.toFixed(15);
+}
+
 module.exports = {
 	getFileExtensionFromMime,
 	uploadFile,
+	validateInputPassword,
+	calculateFolderSize,
 };

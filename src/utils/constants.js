@@ -1,10 +1,8 @@
-const CONSTANTS = {
-	PUBLIC_FOLDER_BASE_URL: "../../public",
-};
-
 const REDIRECT_PAGE = {
 	NOT_FOUND: "404.html",
 };
+
+const PUBLIC_DOCS_BASEURL = "public/assets/docs/";
 
 const HTTP_STATUS_CODES = {
 	OK: 200,
@@ -16,12 +14,12 @@ const HTTP_STATUS_CODES = {
 	// Add more status codes as needed
 };
 
-const REGISTERED_PAGE = ["home", "promotion", "create-promotion"];
+const REGISTERED_PAGE = ["home", "promotion", "create-promotion", "accountSettings"];
 const REGISTERED_ROUTES = ["test", "resetPassword"];
 module.exports = {
-	CONSTANTS,
 	REDIRECT_PAGE,
 	REGISTERED_PAGE,
 	HTTP_STATUS_CODES,
 	REGISTERED_ROUTES,
+	PUBLIC_DOCS_BASEURL,
 };

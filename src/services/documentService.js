@@ -27,7 +27,7 @@ const deleteById = async (documentId) => {
 			},
 		});
 
-		return apiResponse.json();
+		return apiResponse;
 	} catch (error) {
 		console.log(error);
 	}

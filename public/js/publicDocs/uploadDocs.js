@@ -91,6 +91,7 @@ async function handleUploadDocument(event) {
 		if (error.name === "AbortError") {
 			renderInfoMessage(uploadDocumentContainer, getHttpStatusMessage(408), "danger");
 		} else {
+			console.log(error);
 			renderInfoMessage(uploadDocumentContainer, error.message, "danger");
 		}
 	} finally {

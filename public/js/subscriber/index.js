@@ -1,3 +1,8 @@
+function handleAddTranslation() {
+	const actionModal = document.getElementById("actionModal");
+	actionModal.showModal();
+}
+
 async function loadData() {
 	const subscriberDataTable = document.getElementById("subscriberDataTable");
 	const tbody = subscriberDataTable.querySelector("tbody");
@@ -27,7 +32,21 @@ async function loadData() {
 					newRow.appendChild(emailCol);
 
 					const sourceCol = document.createElement("td");
+					sourceCol.classList.add("flex", "gap-2");
 					sourceCol.textContent = item.source;
+
+					/* languageOption.map((language) => {
+						const lang = document.createElement("h6");
+						lang.textContent = language.toUpperCase();
+						lang.classList.add("bg-circle", "bg-circle-primary");
+						sourceCol.appendChild(lang);
+					});
+
+					const addTranslation = document.createElement("h1");
+					addTranslation.classList.add("bi", "bi-plus", "bg-circle", "bg-circle-action");
+					addTranslation.addEventListener("mouseup", handleAddTranslation);
+					sourceCol.appendChild(addTranslation); */
+
 					newRow.appendChild(sourceCol);
 
 					const dateCol = document.createElement("td");

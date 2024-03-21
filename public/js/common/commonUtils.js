@@ -1,3 +1,5 @@
+let languageOption = ["en", "id", "my"];
+
 function handleToogleDrawer() {
 	const drawer = document.getElementById("drawer");
 	const drawerToggle = document.getElementById("drawerToggle");
@@ -66,6 +68,7 @@ function handleInputSearchBox() {
 	});
 }
 
+// 2.
 function handleSelectedImage(e) {
 	const selectedFile = e.target.files[0];
 
@@ -89,6 +92,7 @@ function handleSelectedImage(e) {
 	}
 }
 
+// 1.
 function handleCanvasAttachImage() {
 	const attachedImage = document.getElementById("attachedImage");
 	const fileInput = document.getElementById("fileInput");
@@ -180,7 +184,6 @@ async function fetchWithTimeout(url, options) {
 	const controller = new AbortController();
 	const id = setTimeout(() => controller.abort(), timeout);
 	options.signal = controller.signal;
-
 	const response = await fetch(url, options);
 	clearTimeout(id);
 	return response;
@@ -188,9 +191,9 @@ async function fetchWithTimeout(url, options) {
 
 function formatDateToCustomString(dateString) {
 	return new Date(dateString).toLocaleString("en-US", {
-		weekday: "long",
+		// weekday: "long",
 		day: "numeric",
-		month: "long",
+		month: "short",
 		year: "numeric",
 		hour: "numeric",
 		minute: "numeric",
@@ -285,18 +288,18 @@ function parseCustomDate(dateString) {
 	var [, day, month, dayNum, year, hour, minute, second, meridian] = dateString.match(regex);
 
 	var monthNames = [
-		"January",
-		"February",
-		"March",
-		"April",
+		"Jan",
+		"Feb",
+		"Mar",
+		"Apr",
 		"May",
-		"June",
-		"July",
-		"August",
-		"September",
-		"October",
-		"November",
-		"December",
+		"Jun",
+		"Jul",
+		"Aug",
+		"Sep",
+		"Octr",
+		"Nov",
+		"Dec",
 	];
 
 	var monthIndex = monthNames.indexOf(month);
@@ -308,4 +311,114 @@ function parseCustomDate(dateString) {
 	}
 
 	return new Date(year, monthIndex, dayNum, hour, minute, second);
+}
+
+function promiseLoadImage(imageId, imageSrc, classList) {
+	return new Promise((resolve, reject) => {
+		const img = new Image();
+		img.att;
+		img.onload = resolve;
+		img.onerror = reject;
+		img.id = imageId;
+		img.src = imageSrc;
+		if (classList) {
+			classList.map((className) => {
+				img.classList.add(className);
+			});
+		}
+	});
+}
+
+function getPathVariable(pathname) {
+	const segments = pathname.split("/");
+	const value = segments[segments.length - 1];
+	return value;
+}
+
+async function sendRequest(apiEndPoint, options, modalAction, redirectPage, callBackAction) {
+	const loadingModal = document.getElementById("loadingModal");
+	const actionResponse = {
+		isSuccess: true,
+		redirectPage,
+	};
+
+	try {
+		startLoader(loadingModal, modalAction, actionResponse);
+
+		const response = await fetchWithTimeout(apiEndPoint, options);
+
+		if (!response.ok) {
+			const errorResponse = await response.json();
+			throw new Error(`${errorResponse.message}. Please try again later.`);
+		}
+	} catch (error) {
+		actionResponse.isSuccess = false;
+		actionResponse.reason = error.message;
+		if (error.name === "AbortError") {
+			actionResponse.reason = "Request Time Out";
+		}
+	} finally {
+		setTimeout(() => {
+			if (callBackAction) {
+				callBackAction();
+			}
+			stopLoader(loadingModal, modalAction, actionResponse);
+		}, 100);
+	}
+}
+
+async function preloadData(apiEndPoint, options, callBackAction) {
+	/* const loadingModal = document.getElementById("loadingModal");
+	const actionResponse = {
+		isSuccess: true,
+		redirectPage,
+	}; */
+
+	try {
+		// startLoader(loadingModal, modalAction, actionResponse);
+
+		const response = await fetchWithTimeout(apiEndPoint, options);
+
+		if (!response.ok) {
+			// throw new Error(`${modalAction.ON_FAILED}. Please try again later.`);
+		}
+	} catch (error) {
+		/* console.log(error);
+		actionResponse.isSuccess = false;
+		actionResponse.reason = "Something went wrong";
+		if (error.name === "AbortError") {
+			actionResponse.reason = "Request Time Out";
+		} */
+	} finally {
+		/* setTimeout(() => {
+			if (callBackAction) {
+				callBackAction();
+			}
+			stopLoader(loadingModal, modalAction, actionResponse);
+		}, 1000); */
+	}
+}
+
+function removeOuterTags(str, tagName) {
+	const openingTagRegex = new RegExp(`^<${tagName}>`, "i");
+	const closingTagRegex = new RegExp(`</${tagName}>$`, "i");
+	return str.replace(openingTagRegex, "").replace(closingTagRegex, "");
+}
+
+function handleSwitchChanges(event) {}
+
+function handleSwitch() {
+	const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+	checkboxes.forEach((checkBox) => {
+		checkBox.addEventListener("change", handleSwitchChanges);
+	});
+}
+
+function getCookie(cookieName) {
+	let cookie = {};
+	document.cookie.split(";").forEach(function (el) {
+		let [key, value] = el.split("=");
+		cookie[key.trim()] = value;
+	});
+	return cookie[cookieName];
 }

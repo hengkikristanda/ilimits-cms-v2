@@ -3,6 +3,10 @@ const { REDIRECT_PAGE, REGISTERED_PAGE } = require("../utils/constants");
 const userService = require("../services/usersServices");
 const { calculateFolderSize } = require("../utils/commonUtils");
 
+const registeredPages = {
+	webSettings: "../view/webSettings/index.html",
+};
+
 const get = async (req, res) => {
 	const notFoundPage = path.join(
 		__dirname,
@@ -82,6 +86,30 @@ const getAccountSettings = async (req, res) => {
 	}
 };
 
+const dispatch = async (req, res) => {
+	try {
+		const requestedPath = req.path.slice(1);
+
+		const htmlPage = registeredPages[requestedPath];
+
+		const targetPage = path.join(__dirname, `${htmlPage}`);
+		res.sendFile(targetPage);
+	} catch (error) {
+		console.log(error);
+		res.redirect("/notfound");
+	}
+};
+
+const getWebPagesFooter = async (req, res) => {
+	try {
+		const targetPage = path.join(__dirname, `../view/footer/index.html`);
+		res.sendFile(targetPage);
+	} catch (error) {
+		console.log(error);
+		res.redirect("/notfound");
+	}
+};
+
 const getSubscriber = async (req, res) => {
 	try {
 		const targetPage = path.join(__dirname, `../view/subscriber/index.html`);
@@ -102,9 +130,30 @@ const getPromotions = async (req, res) => {
 	}
 };
 
-const getCreatePromotion = async (req, res) => {
+const getCreatePromotionPage = async (req, res) => {
 	try {
 		const targetPage = path.join(__dirname, `../view/promotions/create-promotion.html`);
+		res.sendFile(targetPage);
+	} catch (error) {
+		console.log(error);
+		res.sendFile(notFoundPage);
+	}
+};
+
+const getUpdatePromotionPage = async (req, res) => {
+	try {
+		// const contentId = req.params.contentId;
+		const targetPage = path.join(__dirname, `../view/promotions/update-promotion.html`);
+		res.sendFile(targetPage);
+	} catch (error) {
+		console.log(error);
+		res.sendFile(notFoundPage);
+	}
+};
+
+const getPreviewPromotionPage = async (req, res) => {
+	try {
+		const targetPage = path.join(__dirname, `../view/promotions/preview-promotion.html`);
 		res.sendFile(targetPage);
 	} catch (error) {
 		console.log(error);
@@ -163,9 +212,13 @@ module.exports = {
 	getHomePage,
 	getAccountSettings,
 	getPromotions,
-	getCreatePromotion,
+	getCreatePromotionPage,
+	getUpdatePromotionPage,
+	getPreviewPromotionPage,
 	getSubscriber,
 	getTest,
 	getPublicDocs,
 	getUploadPublicDocs,
+	getWebPagesFooter,
+	dispatch,
 };

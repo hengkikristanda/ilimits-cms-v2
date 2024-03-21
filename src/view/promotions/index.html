@@ -31,7 +31,7 @@
 				<section id="mainStage" class="pl-4 w-full">
 					<div class="flex flex-col">
 						<h2 class="mb-6 font-semibold">Promotions</h2>
-						<div class="flex flex-col gap-4">
+						<div id="rowsBlockContainer" class="flex flex-col gap-4">
 							<div class="rows-block-header">
 								<div class="rows-block-header-left">
 									<a href="promotions/createPromotion" class="button-icon button-icon-success">
@@ -65,42 +65,36 @@
 									</div>
 								</div>
 							</div>
-							<div class="rows-block">
-								<h4>What is Lorem Ipsum?</h4>
-								<p>
-									Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
-									Ipsum has been the industry's standard dummy text ever since the 1500s, he
-									industry's standard dummy text ever since the 1500s, he industry's standard dummy
-									text ever since the 1500s,
-								</p>
-								<h6>Where does it come from?</h6>
-								<div>
-									<span class="mybadge mybadge-primary">Published</span>
-									<h6>Last Modified by Admin @ Jan 12, 2024</h6>
-								</div>
-							</div>
-							<div class="rows-block">
-								<h4>The standard Lorem Ipsum passage, used since the 1500s</h4>
-								<p>
-									There are many variations of passages of Lorem Ipsum available, but the majority
-									have suffered alteration in some form, by injected humour, or randomised words
-									which don't look even slightly believable. If you are going to use a passage of
-									Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the
-									middle of text. All the Lorem Ipsum generators on the Internet tend to repeat
-									predefined chunks as necessary, making this the first true generator on the
-									Internet.
-								</p>
-								<h6>Where can I get some?</h6>
-								<div>
-									<span class="mybadge">Draft</span>
-									<h6>Last Modified by Admin @ Jan 12, 2024</h6>
-								</div>
-							</div>
+							<div id="info-message" class="alert-block">ERROR</div>
 						</div>
 					</div>
 				</section>
 			</div>
 		</div>
+		<dialog id="alertModal" class="modal">
+			<!-- <div class="modal-box p-0 text-center w-full max-w-sm flex flex-col">
+				<div class="flex flex-col py-6 gap-2 px-2">
+					<h3 class="font-bold text-lg">Info</h3>
+					<p>Press ESC key or click the button below to close</p>
+				</div>
+				<form method="dialog">
+					<div
+						id="modalButtonContainer"
+						class="flex justify-between w-full border-t border-gray-300">
+						<button
+							class="text-base border-0 outline-0 font-semibold text-center w-full border-r border-gray-300 py-4 h-fit hover:bg-gray-300">
+							Cancel
+						</button>
+						<button
+							class="text-red-500 font-semibold text-center w-full py-4 h-fit cursor-pointer hidden hover:bg-red-500 hover:text-white">
+							Yes, Discard Changes
+						</button>
+					</div>
+				</form>
+			</div> -->
+		</dialog>
+
+		<dialog id="loadingModal" class="modal"></dialog>
 	</body>
 	<script src="/js/common/commonUtils.js"></script>
 	<script src="/js/common/commonComponents.js"></script>

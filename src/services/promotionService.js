@@ -1,4 +1,4 @@
-const Promotion = require("../model/promotionModel");
+// const Promotion = require("../model/promotionModel");
 const { generateTimestampBasedUUID } = require("../utils/uuid");
 
 const create = async (promotionDTO) => {

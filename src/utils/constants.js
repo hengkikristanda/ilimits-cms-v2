@@ -3,6 +3,7 @@ const REDIRECT_PAGE = {
 };
 
 const PUBLIC_DOCS_BASEURL = "public/assets/docs/";
+const PUBLIC_TEMP_IMG_BASEURL = "public/assets/img/temp/";
 
 const HTTP_STATUS_CODES = {
 	OK: 200,
@@ -22,4 +23,5 @@ module.exports = {
 	HTTP_STATUS_CODES,
 	REGISTERED_ROUTES,
 	PUBLIC_DOCS_BASEURL,
+	PUBLIC_TEMP_IMG_BASEURL,
 };

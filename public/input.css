@@ -4,8 +4,8 @@
 
 @layer base {
 	html {
-		font-family: "Noto-sans", system-ui, sans-serif;
-		font-size: 16px;
+		/* font-family: "Noto-sans", system-ui, sans-serif; */
+		font-size: 12px;
 	}
 	h1 {
 		@apply text-4xl;
@@ -208,22 +208,35 @@
 }
 
 @layer utilities {
-	.previewContainer a {
-		@apply text-link;
-	}
-	.previewContainer h1,
-	.previewContainer h2,
-	.previewContainer h3,
-	.previewContainer h4 {
-		@apply py-4;
-	}
-
 	.input-label {
 		@apply text-sm mb-2 text-gray-500;
 	}
 
 	.icon-link-circle {
 		@apply cursor-pointer hover:bg-gray-300 w-10 h-10 min-w-10 min-h-10 rounded-full flex items-center justify-center text-gray-500;
+	}
+
+	.bg-square {
+		@apply w-fit min-w-10 px-2 py-px flex items-center justify-center;
+	}
+
+	.bg-circle {
+		@apply w-10 h-10 min-w-10 min-h-10 rounded-full flex items-center justify-center;
+	}
+	.bg-circle-disabled {
+		@apply bg-gray-300 text-white;
+	}
+	.bg-circle-label-active {
+		@apply font-semibold;
+	}
+	.bg-circle-label-disabled {
+		@apply text-gray-300;
+	}
+	.bg-circle-primary {
+		@apply bg-baseGreen text-white;
+	}
+	.bg-circle-action {
+		@apply bg-gray-200 text-gray-700 border-2 border-dashed border-gray-400 hover:bg-gray-500 hover:border-gray-500;
 	}
 
 	.item-menu {
@@ -327,9 +340,25 @@
 	}
 
 	.rows-block {
-		@apply flex flex-col w-full gap-2 bg-white shadow-gray-300 shadow-xl rounded-md p-4 cursor-pointer border-b-2 hover:border-baseGreen;
+		@apply flex w-full gap-2 bg-white shadow-gray-300 shadow-xl rounded-md p-4 border-b-2 hover:border-baseGreen;
 	}
-	.rows-block > h4 {
+	.rows-block .overview {
+		@apply cursor-pointer;
+	}
+	.rows-block .heading {
+		@apply font-bold text-zinc-700 line-clamp-1;
+	}
+	.rows-block .subHeading {
+		@apply font-bold text-zinc-500 line-clamp-2;
+	}
+	.rows-block .metaText {
+		@apply font-semibold text-xs subtext-success;
+	}
+
+	.col-wrap {
+		@apply text-link truncate max-w-4;
+	}
+	/* .rows-block > h4 {
 		@apply font-bold;
 	}
 	.rows-block > p {
@@ -339,11 +368,11 @@
 		@apply text-xs;
 	}
 	.rows-block > div {
-		@apply flex justify-between items-end;
+		@apply flex justify-between items-start;
 	}
 	.rows-block > div > h6 {
 		@apply subtext-success;
-	}
+	} */
 
 	.form-block {
 		@apply flex flex-col gap-2 bg-white shadow-gray-300 shadow-xl rounded-md py-4;
@@ -367,6 +396,15 @@
 	}
 	.form-canvas input {
 		@apply hidden;
+	}
+
+	.previewContainer {
+		@apply flex flex-col md:px-40 py-20 text-zinc-700 w-full bg-white shadow-gray-300 shadow-xl rounded-md justify-center max-w-screen-2xl;
+	}
+
+	.previewContainer p,
+	.previewContainer h4 {
+		@apply leading-relaxed;
 	}
 
 	.mybadge {
@@ -653,12 +691,21 @@
 	transition: width 0.1s ease-in-out;
 }
 
+#imageDataContainer {
+	position: relative;
+	width: 100%; /* Make the container responsive */
+	padding-top: 56.25%;
+	min-height: 16rem;
+	margin-bottom: 1rem;
+}
+
 #imageDataContainer img {
-	height: 100%;
-	max-height: 50rem;
+	position: absolute;
+	top: 0;
+	left: 0;
 	width: 100%;
-	object-fit: cover;
-	margin: 2rem 0;
+	height: 100%;
+	object-fit: cover; /* Adjust this value to change how the image fits */
 }
 
 .alert-block {
@@ -682,3 +729,79 @@
 	border: solid 1px rgb(191 219 254);
 	color: rgb(59 130 246);
 }
+
+@media (min-width: 640px) {
+	html {
+		font-size: 16px;
+	}
+}
+
+/* Style for the overlay */
+#overlay {
+	position: fixed; /* Overlay fixed position */
+	display: none; /* Display the overlay */
+	width: 100%; /* Full width */
+	height: 100%; /* Full height */
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: rgba(0, 0, 0, 0.5); /* Black background with opacity */
+	z-index: 100; /* Sit on top */
+	cursor: not-allowed; /* Change cursor to indicate disabled interaction */
+}
+
+/* Switch Component */
+.switch {
+	position: relative;
+	display: inline-block;
+	width: 2.5rem;
+	height: 1.3rem;
+}
+
+.slider {
+	position: absolute;
+	cursor: pointer;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: #ccc;
+	-webkit-transition: 0.4s;
+	transition: 0.4s;
+}
+
+.slider:before {
+	position: absolute;
+	content: "";
+	height: 1rem;
+	width: 1rem;
+	left: 4px;
+	bottom: 3px;
+	background-color: white;
+	-webkit-transition: 0.4s;
+	transition: 0.4s;
+}
+input:checked + .slider {
+	background-color: hsl(115, 43%, 52%);
+}
+
+input:focus + .slider {
+	box-shadow: 0 0 1px hsl(115, 43%, 52%);
+}
+
+input:checked + .slider:before {
+	-webkit-transform: translateX(16px);
+	-ms-transform: translateX(16px);
+	transform: translateX(16px);
+}
+
+/* Rounded sliders */
+.slider.round {
+	border-radius: 34px;
+}
+
+.slider.round:before {
+	border-radius: 50%;
+}
+/* end of switch component */

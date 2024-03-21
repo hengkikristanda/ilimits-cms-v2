@@ -1,4 +1,4 @@
-const nodemailer = require("nodemailer");
+/* const nodemailer = require("nodemailer");
 require("dotenv").config();
 
 const transporterNoReply = nodemailer.createTransport({
@@ -48,3 +48,4 @@ const sendResetPasswordEmail = async (email) => {
 };
 
 module.exports = { sendTestEmail, sendResetPasswordEmail };
+ */

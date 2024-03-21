@@ -1,8 +1,8 @@
-const emailModel = require("../model/emailModel");
+// const emailModel = require("../model/emailModel");
 const { REGISTERED_ROUTES } = require("../utils/constants");
 
 const send = async (req, res) => {
-	const emailPurpose = req.params.purpose;
+	/* const emailPurpose = req.params.purpose;
 
 	if (emailPurpose && REGISTERED_ROUTES.includes(emailPurpose)) {
 		const { email } = req.body;
@@ -22,7 +22,7 @@ const send = async (req, res) => {
 			return res.status(500).send(result.message);
 		}
 	}
-	return res.status(500).send("Invalid Route");
+	return res.status(500).send("Invalid Route"); */
 };
 
 module.exports = { send };

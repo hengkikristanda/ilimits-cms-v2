@@ -28,6 +28,7 @@
 		<title>Content Management System | iLimits</title>
 	</head>
 	<body>
+		<div id="overlay"></div>
 		<div id="myContainer" class="myContainer mx-auto">
 			<nav id="navbar" class="sticky top-0 z-30 backdrop-blur-sm border-b border-gray-200"></nav>
 			<div class="stage-container">
@@ -37,15 +38,19 @@
 						<h2 class="mb-6 font-semibold">Create Promotions</h2>
 						<form id="promotionDataForm">
 							<div class="flex flex-col gap-4">
+								
 								<div class="rows-block-header">
 									<div class="rows-block-header-left">
 										<span
 											id="discardChangesButton"
-											class="button-icon button-icon-info tooltip"
+											class="button-icon button-icon-danger tooltip"
 											data-tip="Back to Previous Page">
 											<span class="bi bi-arrow-return-left"></span>
 										</span>
-										<button type="submit" class="button-icon button-icon-info">
+										<button
+											id="submitContentButton"
+											class="button-icon button-icon-primary"
+											title="Save">
 											<span class="bi bi-floppy-fill"></span>
 										</button>
 										<span
@@ -54,9 +59,11 @@
 											data-tip="Preview changes">
 											<span class="bi bi-eye-fill"></span>
 										</span>
-										<select class="select select-bordered select-sm w-full max-w-xs">
-											<option>Save As Draft</option>
-											<option>Save and Publish</option>
+										<select
+											id="submitType"
+											class="select select-bordered select-sm w-full max-w-xs">
+											<option value="draft">Save As Draft</option>
+											<option value="publish">Save and Publish</option>
 										</select>
 									</div>
 									<div class="rows-block-header-right">
@@ -83,13 +90,14 @@
 										</span>
 									</div>
 								</div>
+								<div id="info-message" class="alert-block">ERROR</div>
 								<div class="form-canvas">
 									<div>
 										<img id="attachedImage" src="/assets/img/1280x720_placeholder.png" />
 										<input type="file" name="image" id="fileInput" accept="image/*" />
 									</div>
 								</div>
-								<div class="form-block">
+								<div class="form-block mb-20">
 									<h4>Promotion Detail</h4>
 									<div class="form-block-container flex-col">
 										<label>Title</label>
@@ -98,12 +106,14 @@
 											type="text"
 											name="promotionTitle"
 											placeholder="Promotion Title"
+											value="Get 35% Rescue Bonus with our newest account"
 											required />
 										<label>Sub Heading</label>
 										<input
 											id="subHeading"
 											type="text"
 											name="promotionSubHeading"
+											value="35% Rescue Bonus"
 											placeholder="Sub Heading"
 											required />
 										<label>Foot Note</label>
@@ -111,7 +121,8 @@
 											id="footNote"
 											type="text"
 											name="promotionFootNote"
-											placeholder="Foot Note" />
+											placeholder="Foot Note"
+											value="Jan 10, 2024 - March 20, 2024" />
 										<div class="flex gap-4 hidden">
 											<div class="flex flex-col gap-2">
 												<label>Start Date</label>
@@ -123,13 +134,30 @@
 											</div>
 										</div>
 										<label>Description</label>
-										<textarea id="myTextArea">Write your article here...</textarea>
-										<label>Call to Action Button Link</label>
-										<input
-											id="ctaButtonLink"
-											type="text"
-											name="ctaButtonLink"
-											placeholder="https://" />
+										<textarea id="myTextArea">
+Embark on a risk-resilient journey with ilimits invest and our exclusive 35% Rescue Bonus tailored for Forex enthusiasts! We understand the challenges of trading, and that's why we're thrilled to introduce this game-changing promotion. If you ever face a stopout, fear not – you will receive a substantial 35% bonus to be traded once more. This offer is designed to empower you during market fluctuations, ensuring your investment remains robust. Dive into the world of Forex with ilimits invest, where our transparent terms and conditions will guide you towards maximizing your potential gains. Seize the opportunity to trade with confidence, bolstered by our 30% Rescue Bonus, because at ilimits invest, your success is our priority!</textarea
+										>
+										<div class="flex gap-4">
+											<div class="flex flex-col w-1/2 gap-2">
+												<label>Call to Action Button Label</label>
+												<input
+													id="ctaButtonLabel"
+													type="text"
+													name="ctaButtonLabel"
+													value="Register Now!"
+													maxlength="30"
+													placeholder="e.g: Register Now!" />
+											</div>
+											<div class="flex flex-col w-1/2 gap-2">
+												<label>Call to Action Button Link</label>
+												<input
+													id="ctaButtonLink"
+													type="text"
+													name="ctaButtonLink"
+													value="https://my.ilimitsinv.com/en/register"
+													placeholder="https://" />
+											</div>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -139,7 +167,7 @@
 			</div>
 			<dialog id="alertModal" class="modal">
 				<div class="modal-box p-0 text-center w-full max-w-sm flex flex-col">
-					<div class="flex flex-col py-6 gap-2">
+					<div class="flex flex-col py-6 gap-2 px-2">
 						<h3 class="font-bold text-lg">Info</h3>
 						<p>Press ESC key or click the button below to close</p>
 					</div>
@@ -148,19 +176,19 @@
 							id="modalButtonContainer"
 							class="flex justify-between w-full border-t border-gray-300">
 							<button
-								class="text-base border-0 outline-0 font-semibold text-center w-1/2 border-r border-gray-300 py-4 h-fit hidden">
+								class="text-base border-0 outline-0 font-semibold text-center w-full border-r border-gray-300 py-4 h-fit hover:bg-gray-300">
 								Cancel
 							</button>
-							<h5
-								id="confirmDeleteButton"
-								class="text-red-500 font-semibold text-center w-1/2 py-4 h-fit cursor-pointer hidden">
+							<button
+								class="text-red-500 font-semibold text-center w-full py-4 h-fit cursor-pointer hidden hover:bg-red-500 hover:text-white">
 								Yes, Discard Changes
-							</h5>
+							</button>
 						</div>
 					</form>
 				</div>
 			</dialog>
 		</div>
+		<dialog id="loadingModal" class="modal"></dialog>
 	</body>
 	<script src="/js/common/commonUtils.js"></script>
 	<script src="/js/common/commonComponents.js"></script>

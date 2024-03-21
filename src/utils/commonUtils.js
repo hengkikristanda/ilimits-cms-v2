@@ -1,5 +1,6 @@
 const fs = require("fs");
 const path = require("path");
+const cheerio = require("cheerio");
 
 const mimeToExtension = {
 	"image/jpeg": "jpg",
@@ -71,9 +72,22 @@ function calculateFolderSize(folderPath) {
 	return remainingStorageGB.toFixed(15);
 }
 
+function replaceHtmlTagValue({ targetValue, targetTag, targetAttribute, oldValue, newValue }) {
+	const $ = cheerio.load(targetValue);
+
+	$(targetTag).each(function () {
+		const oldSrc = $(this).attr(targetAttribute);
+		const newSrc = oldSrc.replace(oldValue, newValue);
+		$(this).attr(targetAttribute, newSrc);
+	});
+
+	return $.html();
+}
+
 module.exports = {
 	getFileExtensionFromMime,
 	uploadFile,
 	validateInputPassword,
 	calculateFolderSize,
+	replaceHtmlTagValue,
 };

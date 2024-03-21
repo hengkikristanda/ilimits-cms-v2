@@ -1,4 +1,3 @@
-const usersServices = require("../services/usersServices");
 const winston = require("winston");
 const { validateInputPassword } = require("../utils/commonUtils");
 
@@ -68,8 +67,16 @@ const login = async (req, res) => {
 				secure: true,
 			};
 
+			let commonInfo = {
+				maxAge: process.env.TOKEN_EXP_TIME,
+				httpOnly: false,
+				sameSite: "none",
+				secure: false,
+			};
+
 			res.cookie("active_userId", responseData.response.userId, options);
 			res.cookie("access_token", responseData.response.token, options);
+			res.cookie("loggedInUser", responseData.response.firstName);
 			res.redirect("/pages/home");
 		} else {
 			const errorResponseData = await apiResponse.json();
@@ -86,6 +93,8 @@ const logout = async (req, res) => {
 	try {
 		// Clear the HTTP-only cookie containing the token
 		res.clearCookie("access_token");
+		res.clearCookie("loggedInUser");
+		res.clearCookie("active_userId");
 
 		// Optionally, perform server-side actions like token invalidation or logging out
 

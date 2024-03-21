@@ -35,14 +35,25 @@ const uploadFile = async (req, res) => {
 				console.log(error);
 			});
 
-		return res.status(200).json({ message: "Document uploaded successfully" });
+		responseBody.isSuccess = true;
+		responseBody.responseMessage = "Document uploaded successfully";
+		responseBody.statusCode = 200;
+		res.status(200).json(responseBody);
 	} catch (error) {
 		console.error("Upload failed:", error.message);
-
 		responseBody.responseMessage = error;
 		responseBody.statusCode = 500;
 		res.status(500).json(responseBody);
 	}
 };
 
-module.exports = { uploadFile };
+const attachedImage = async (req, res) => {
+	if (req.file) {
+		const fileUrl = `${req.protocol}://${req.get("host")}/assets/img/temp/${req.file.filename}`;
+		res.json({ url: fileUrl });
+	} else {
+		return res.status(402).json({ message: "Failed to attach image" });
+	}
+};
+
+module.exports = { uploadFile, attachedImage };

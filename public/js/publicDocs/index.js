@@ -3,18 +3,32 @@ function removeLoader() {
 	documentsTableData.deleteRow(1);
 }
 
-function handleDelete(id, fileName) {
+async function handleConfirmDelete(event) {
+	const documentId = event.target.id.split("_")[1];
+
+	const options = {
+		timeout: 30000,
+		method: "DELETE",
+	};
+
+	const apiEndPoint = `/crud/publicDocs/${documentId}`;
+
+	const callBackAction = () => {
+		const removedContent = document.getElementById("row_" + documentId);
+		if (removedContent) {
+			removedContent.remove();
+		}
+	};
+
+	await sendRequest(apiEndPoint, options, MODAL_ACTION.DELETE, null, callBackAction);
+}
+
+async function handleDelete(itemId, itemName) {
 	const alertModal = document.getElementById("alertModal");
+	alertModal.innerHTML = await alertModalComponent(itemId, itemName, MODAL_ALERT.DELETE);
 
-	const alertTitle = alertModal.getElementsByTagName("h3");
-	const alertMessage = alertModal.getElementsByTagName("p");
-	alertTitle[0].textContent = `Are you sure you want to delete this file ${fileName}?`;
-	alertMessage[0].textContent = "This action cannot be undone.";
-
-	const buttonModal = alertModal.querySelectorAll("#modalButtonContainer button")[1];
-	buttonModal.id = id;
-	buttonModal.classList.remove("hidden");
-	buttonModal.innerHTML = "Yes, Delete This File";
+	const confirmDeleteButton = document.getElementById("confirmDelete_" + itemId);
+	confirmDeleteButton.addEventListener("mouseup", handleConfirmDelete);
 
 	alertModal.showModal();
 }
@@ -58,6 +72,7 @@ async function loadData() {
 				if (documentList) {
 					documentList.map((item, index) => {
 						const newRow = document.createElement("tr");
+						newRow.id = `row_${item.id}`;
 						newRow.className = "hover";
 
 						const actionCol = document.createElement("td");
@@ -80,8 +95,9 @@ async function loadData() {
 
 						const hrefCol = document.createElement("td");
 
-						hrefCol.textContent = item.id;
-						hrefCol.classList.add("text-link");
+						hrefCol.textContent = `/assets/docs/${item.originalFileName}`;
+						hrefCol.classList.add("col-wrap");
+						// hrefCol.classList.add("text-link");
 						hrefCol.title = "Click to Copy The URL";
 						newRow.appendChild(hrefCol);
 
@@ -125,8 +141,24 @@ async function loadData() {
 async function handleDeleteSelectedDocument(event) {
 	const documentId = event.target.id;
 
-	const documentTableContainer = document.getElementById("documentTableContainer");
-	try {
+	const options = {
+		timeout: 30000,
+		method: "DELETE",
+	};
+
+	const apiEndPoint = `/crud/publicDocs/${documentId}`;
+
+	const callBackAction = () => {
+		const removedContent = document.getElementById("row_" + documentId);
+		if (removedContent) {
+			removedContent.remove();
+		}
+	};
+
+	await sendRequest(apiEndPoint, options, MODAL_ACTION.DELETE, null, callBackAction);
+
+	// const documentTableContainer = document.getElementById("documentTableContainer");
+	/* try {
 		const options = {
 			timeout: 30000,
 			method: "DELETE",
@@ -137,7 +169,6 @@ async function handleDeleteSelectedDocument(event) {
 			throw new Error("Failed to remove document. Please try again later.");
 		}
 
-		
 		const tbody = documentTableContainer.querySelector("tbody");
 		while (tbody.firstChild) {
 			tbody.removeChild(tbody.firstChild);
@@ -152,7 +183,7 @@ async function handleDeleteSelectedDocument(event) {
 		} else {
 			renderInfoMessage(documentTableContainer, error.message, "danger");
 		}
-	}
+	} */
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -165,9 +196,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 	const isLoaded = await loadData();
 	if (isLoaded) {
 		removeLoader();
-		const deleteConfirmationForm = document.getElementById("deleteConfirmationForm");
-		const confirmDeleteAction = deleteConfirmationForm.querySelectorAll("button")[1];
-		confirmDeleteAction.addEventListener("mouseup", handleDeleteSelectedDocument);
+		// const deleteConfirmationForm = document.getElementById("deleteConfirmationForm");
+		// const confirmDeleteAction = deleteConfirmationForm.querySelectorAll("button")[1];
+		// confirmDeleteAction.addEventListener("mouseup", handleDeleteSelectedDocument);
 	}
 
 	handleToogleDrawer();

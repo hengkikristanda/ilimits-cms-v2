@@ -32,14 +32,28 @@ const commonUtils = require("../utils/commonUtils");
 router.get("/home", isAuthenticated, routeController.getHomePage);
 
 router.get("/promotions", isAuthenticated, routeController.getPromotions);
-router.get("/promotions/createPromotion", isAuthenticated, routeController.getCreatePromotion);
+router.get("/promotions/createPromotion", isAuthenticated, routeController.getCreatePromotionPage);
+router.get(
+	"/promotions/updatePromotion/:contentId",
+	isAuthenticated,
+	routeController.getUpdatePromotionPage
+);
+router.get(
+	"/promotions/previewPromotion",
+	isAuthenticated,
+	routeController.getPreviewPromotionPage
+);
 
 router.get("/publicDocs", isAuthenticated, routeController.getPublicDocs);
 router.get("/publicDocs/uploads", isAuthenticated, routeController.getUploadPublicDocs);
 
 router.get("/subscriber", isAuthenticated, routeController.getSubscriber);
 
+// Settings
 router.get("/accountSettings", isAuthenticated, routeController.getAccountSettings);
+router.get("/webSettings", isAuthenticated, routeController.dispatch);
+
+router.get("/footer", isAuthenticated, routeController.getWebPagesFooter);
 
 router.get("/test", routeController.getTest);
 

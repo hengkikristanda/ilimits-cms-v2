@@ -1,4 +1,4 @@
-const { DataTypes } = require("sequelize");
+/* const { DataTypes } = require("sequelize");
 const sequelize = require("../config/database"); // Your Sequelize instance
 
 const Promotion = sequelize.define(
@@ -66,3 +66,4 @@ const Promotion = sequelize.define(
 );
 
 module.exports = Promotion;
+ */

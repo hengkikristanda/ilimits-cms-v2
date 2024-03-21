@@ -80,6 +80,9 @@ app.use("/auth", authRoutes);
 app.use("/pages", pagesRoutes);
 app.use("/crud", crudRoutes);
 
+app.use(express.json({ limit: "15mb" })); // Ensure limits here are reasonable
+app.use(express.urlencoded({ limit: "15mb", extended: true }));
+
 app.use((req, res) => {
 	logger.log("info", `Request to ${req.url} got redirected`);
 	res.redirect("/notfound");

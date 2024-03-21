@@ -28,12 +28,18 @@ const deleteDocument = async (req, res) => {
 	try {
 		let documentId = req.params.documentId;
 
+		console.log(documentId);
+
 		if (!documentId) {
 			responseBody.responseMessage = "Id is required";
 			return res.status(400).json(responseBody);
 		}
 
-		documentService.deleteById(documentId);
+		const result = await documentService.deleteById(documentId);
+		if (!result.ok) {
+			const errorResponseData = await result.json();
+			throw new Error(errorResponseData.message);
+		}
 
 		responseBody.isSuccess = true;
 		responseBody.responseMessage = "Document Successfully Removed";
@@ -41,7 +47,7 @@ const deleteDocument = async (req, res) => {
 		return res.status(200).json(responseBody);
 	} catch (error) {
 		console.error(error);
-		responseBody.responseMessage = error;
+		responseBody.responseMessage = error.message;
 		responseBody.statusCode = 500;
 		res.status(500).json(responseBody);
 	}

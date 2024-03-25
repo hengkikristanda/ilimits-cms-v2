@@ -88,7 +88,6 @@ function renderInfoMessage(targetForm, infoMessage, alertType, isBlock = true) {
 
 function renderNavBar() {
 	let loggedInUser = getCookie("loggedInUser") || "Demo User";
-
 	loggedInUser = decodeURIComponent(loggedInUser);
 
 	return [

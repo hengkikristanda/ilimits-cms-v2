@@ -37,6 +37,16 @@ app.use(express.json());
 	})
 ); */
 
+app.use(
+	express.static("public", {
+		maxAge: 0, // Set the maximum age for caching (1 day in this case)
+	})
+);
+app.use((req, res, next) => {
+	res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+	next();
+});
+
 const logger = winston.createLogger({
 	level: "info",
 	format: winston.format.combine(

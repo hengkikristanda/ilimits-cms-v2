@@ -12,7 +12,28 @@ const getAllDocument = async (req, res) => {
 
 		responseBody.isSuccess = true;
 		responseBody.responseMessage = "Success";
-		responseBody.code = 200;
+		responseBody.objectData = resultSet;
+		return res.status(200).json(responseBody);
+	} catch (error) {
+		console.error(error);
+		responseBody.responseMessage = error;
+		res.status(500).json(responseBody);
+	}
+};
+
+/* const getAllDocument = async (req, res) => {
+	const responseBody = new ResponseBody();
+	try {
+		// const resultSet = await documentService.fetchAll();
+		const resultSet = await documentService.readPdfFilenames();
+		if (!resultSet) {
+			responseBody.responseMessage = "No Data Found";
+			return res.status(400).json(responseBody);
+		}
+
+
+		responseBody.isSuccess = true;
+		responseBody.responseMessage = "Success";
 		responseBody.objectData = resultSet;
 		return res.status(200).json(responseBody);
 	} catch (error) {
@@ -21,7 +42,7 @@ const getAllDocument = async (req, res) => {
 		responseBody.statusCode = 500;
 		res.status(500).json(responseBody);
 	}
-};
+}; */
 
 const deleteDocument = async (req, res) => {
 	const responseBody = new ResponseBody();
@@ -43,7 +64,6 @@ const deleteDocument = async (req, res) => {
 
 		responseBody.isSuccess = true;
 		responseBody.responseMessage = "Document Successfully Removed";
-		responseBody.code = 200;
 		return res.status(200).json(responseBody);
 	} catch (error) {
 		console.error(error);

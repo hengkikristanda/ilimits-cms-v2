@@ -48,10 +48,13 @@ const generateToken = async (user) => {
 };
 
 const getUser = async (userId) => {
-	let authEndPoint = process.env.AUTH_END_POINT + "user/";
+	let authEndPoint = process.env.AUTH_END_POINT + "/users";
 	try {
 		if (userId) {
-			authEndPoint += userId;
+			authEndPoint += "/" + userId;
+
+			console.log(`Send Request to: ${authEndPoint}`);
+
 			const apiResponse = await fetch(authEndPoint, {
 				method: "GET",
 				headers: {

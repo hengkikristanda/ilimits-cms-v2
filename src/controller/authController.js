@@ -41,13 +41,14 @@ const login = async (req, res) => {
 		const { username, password } = req.body;
 
 		responseBody.responseMessage = "Invalid username or password";
-		responseBody.statusCode = 400;
 
 		if (!username || !password) {
 			return res.status(400).json(responseBody);
 		}
 
-		const authEndPoint = process.env.AUTH_END_POINT + "login";
+		const authEndPoint = process.env.AUTH_END_POINT + "/users/login";
+
+		console.log(`Send Login Request to: ${authEndPoint}`);
 
 		const apiResponse = await fetch(authEndPoint, {
 			method: "POST",
@@ -74,9 +75,11 @@ const login = async (req, res) => {
 				secure: false,
 			};
 
+			console.log(responseData.response);
+
 			res.cookie("active_userId", responseData.response.userId, options);
 			res.cookie("access_token", responseData.response.token, options);
-			res.cookie("loggedInUser", responseData.response.firstName);
+			res.cookie("loggedInUser", responseData.response.userName);
 			res.redirect("/pages/home");
 		} else {
 			const errorResponseData = await apiResponse.json();
@@ -84,7 +87,6 @@ const login = async (req, res) => {
 		}
 	} catch (error) {
 		responseBody.responseMessage = "Something went wrong";
-		responseBody.statusCode = 500;
 		res.status(500).json(responseBody);
 	}
 };
@@ -113,13 +115,12 @@ const resetPassword = async (req, res) => {
 		const { emailAddress } = req.body;
 
 		responseBody.responseMessage = "Invalid username or password";
-		responseBody.statusCode = 400;
 
 		if (!emailAddress) {
 			return res.status(400).json(responseBody);
 		}
 
-		const authEndPoint = process.env.AUTH_END_POINT + "resetPassword";
+		const authEndPoint = process.env.AUTH_END_POINT + "/users/resetPassword/" + emailAddress;
 
 		const apiResponse = await fetch(authEndPoint, {
 			method: "POST",
@@ -138,7 +139,6 @@ const resetPassword = async (req, res) => {
 		}
 	} catch (error) {
 		responseBody.responseMessage = "Something went wrong";
-		responseBody.statusCode = 500;
 		res.status(500).json(responseBody);
 	}
 };
@@ -151,7 +151,6 @@ const updatePassword = async (req, res) => {
 
 		if (newPassword !== confirmNewPassword) {
 			responseBody.responseMessage = "Password mismatch";
-			responseBody.statusCode = 400;
 			return res.status(400).json(responseBody);
 		}
 
@@ -159,11 +158,12 @@ const updatePassword = async (req, res) => {
 		if (!isValidPassword) {
 			responseBody.responseMessage =
 				"New Passwords must have at least 8 characters and contain at least one of the following: uppercase letters, lowercase letters, numbers";
-			responseBody.statusCode = 400;
 			return res.status(400).json(responseBody);
 		}
 
-		const authEndPoint = process.env.AUTH_END_POINT + "updatePassword";
+		const authEndPoint = process.env.AUTH_END_POINT + "/users/updatePassword";
+
+		console.log("[Update Password]Sending POST request to: ", authEndPoint);
 
 		const apiResponse = await fetch(authEndPoint, {
 			method: "POST",
@@ -194,7 +194,6 @@ const updatePassword = async (req, res) => {
 		}
 	} catch (error) {
 		responseBody.responseMessage = "Something went wrong";
-		responseBody.statusCode = 500;
 		res.status(500).json(responseBody);
 	}
 };
@@ -207,21 +206,21 @@ const updateUser = async (req, res) => {
 
 		if (!firstName) {
 			responseBody.responseMessage = "First Name is required";
-			responseBody.statusCode = 400;
 			return res.status(400).json(responseBody);
 		}
 
 		if (!email) {
 			responseBody.responseMessage = "Email is required";
-			responseBody.statusCode = 400;
 			return res.status(400).json(responseBody);
 		}
 
-		let authEndPoint = process.env.AUTH_END_POINT + "user/";
+		let authEndPoint = process.env.AUTH_END_POINT + "/users";
 
 		if (currentUser.id) {
-			authEndPoint += `${currentUser.id}`;
+			authEndPoint += `/${email}`;
 		}
+
+		console.log("[Update User Info] Sending PUT request to: ", authEndPoint);
 
 		const apiResponse = await fetch(authEndPoint, {
 			method: "PUT",
@@ -247,7 +246,6 @@ const updateUser = async (req, res) => {
 	} catch (error) {
 		console.log(error);
 		responseBody.responseMessage = "Something went wrong";
-		responseBody.statusCode = 500;
 		res.status(500).json(responseBody);
 	}
 };

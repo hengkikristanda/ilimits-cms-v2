@@ -8,7 +8,6 @@ const getCurrentUser = async (req, res) => {
 
 		if (!userId) {
 			responseBody.message = "User Id is Required";
-			responseBody.code = 400;
 			return res.status(400).json(responseBody);
 		}
 
@@ -20,14 +19,12 @@ const getCurrentUser = async (req, res) => {
 
 		responseBody.isSuccess = true;
 		responseBody.responseMessage = "User Found";
-		responseBody.code = 200;
-		responseBody.objectData = user.response;
+		responseBody.objectData = user.data;
 
 		return res.status(200).json(responseBody);
 	} catch (error) {
 		console.error(error);
 		responseBody.responseMessage = error;
-		responseBody.statusCode = 500;
 		res.status(500).json(responseBody);
 	}
 };

@@ -86,7 +86,7 @@ async function loadData() {
 						const fileNamePreview = document.createElement("a");
 						fileNamePreview.textContent = item.originalFileName;
 						fileNamePreview.target = "blank";
-						fileNamePreview.href = `/assets/docs/${item.originalFileName}`;
+						fileNamePreview.href = `/assets/docs/${item.fileName}`;
 						fileNamePreview.title = "Click to View The Document";
 
 						fileNameCol.classList.add("text-link");
@@ -95,7 +95,7 @@ async function loadData() {
 
 						const hrefCol = document.createElement("td");
 
-						hrefCol.textContent = `/assets/docs/${item.originalFileName}`;
+						hrefCol.textContent = `/assets/docs/${item.fileName}`;
 						hrefCol.classList.add("col-wrap");
 						// hrefCol.classList.add("text-link");
 						hrefCol.title = "Click to Copy The URL";
@@ -104,7 +104,7 @@ async function loadData() {
 						hrefCol.addEventListener("mouseup", handleCopyText);
 
 						const uploaderCol = document.createElement("td");
-						uploaderCol.textContent = item.createdBy;
+						uploaderCol.textContent = item.uploadedBy;
 						newRow.appendChild(uploaderCol);
 
 						const dateCol = document.createElement("td");

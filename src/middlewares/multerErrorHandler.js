@@ -7,14 +7,14 @@ const documentUploadErrorHandler = (upload) => (req, res, next) => {
 		if (err instanceof multer.MulterError) {
 			// A Multer error occurred when uploading.
 			if (err.code === "LIMIT_FILE_SIZE") {
-				responseBody.responseMessage = "File size is too large. Limit is 5MB.";
+				responseBody.responseMessage = "Failed to upload document: File size is too large. Limit is 5MB.";
 				responseBody.statusCode = 400;
 				return res.status(400).json(responseBody);
 			}
 			// Handle other Multer errors here if needed
 		} else if (err) {
 			// An unknown error occurred when uploading.
-			responseBody.responseMessage = "Something went wrong.";
+			responseBody.responseMessage = "Failed to upload document: Something went wrong.";
 			responseBody.statusCode = 400;
 			return res.status(500).json(responseBody);
 		}

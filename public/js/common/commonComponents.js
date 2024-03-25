@@ -87,7 +87,9 @@ function renderInfoMessage(targetForm, infoMessage, alertType, isBlock = true) {
 }
 
 function renderNavBar() {
-	const loggedInUser = getCookie("loggedInUser") || "Demo User";
+	let loggedInUser = getCookie("loggedInUser") || "Demo User";
+
+	loggedInUser = decodeURIComponent(loggedInUser);
 
 	return [
 		`<div class="flex justify-between h-16 items-center">`,
@@ -96,7 +98,7 @@ function renderNavBar() {
 		`		<img src="/assets/img/logo.svg" class="max-h-8" />`,
 		`	</div>`,
 		`	<div class="flex gap-4 items-center">`,
-		`		<h5 class="font-semibold">Welcome ${loggedInUser}</h5>`,
+		`		<h5>Welcome <span class="text-baseGreen font-semibold">${loggedInUser}</span></h5>`,
 		`		<div class="dropdown dropdown-end">`,
 		`			<div tabindex="0" role="button" class="btn m-1 bi bi-person-circle icon-link-circle"></div>`,
 		`			<ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">`,

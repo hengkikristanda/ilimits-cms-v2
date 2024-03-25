@@ -16,7 +16,8 @@ const publicDocStorage = multer.diskStorage({
 		cb(null, "./public/assets/docs/");
 	},
 	filename: (req, file, cb) => {
-		cb(null, file.originalname);
+		cb(null, Date.now() + "_" + file.originalname);
+		// cb(null, file.fieldname + "-" + Date.now() + path.extname(file.originalname));
 	},
 });
 
@@ -29,7 +30,7 @@ const publicDocUploader = multer({
 
 const attachedStorage = multer.diskStorage({
 	destination: (req, file, cb) => {
-		cb(null, "./public/assets/img/temp/");
+		cb(null, "./public/assets/img/promotions/hero/");
 	},
 	filename: (req, file, cb) => {
 		const fileName = Date.now() + "-" + file.originalname.replace(/ /g, "_");

@@ -1,5 +1,5 @@
 const getAllContent = async (startIndex, contentId) => {
-	let clientEndPoint = process.env.CONTENT_END_POINT + "promotion/";
+	let clientEndPoint = process.env.CONTENT_END_POINT + "/promotion/";
 	try {
 		if (contentId) {
 			clientEndPoint += contentId;

@@ -69,7 +69,6 @@ async function handleSubmitUpdateProfile(event) {
 		}
 		const responseData = await response.json();
 		renderInfoMessage(this, responseData.message, "success");
-		
 	} catch (error) {
 		if (error.name === "AbortError") {
 			renderInfoMessage(this, getHttpStatusMessage(408), "danger");
@@ -97,12 +96,13 @@ async function loadData() {
 		} else {
 			const responseData = await response.json();
 
-			const userDetail = responseData.data;
-			if (userDetail) {
-				profileSettingContainer.querySelector("#firstName").value = userDetail.firstName;
-				profileSettingContainer.querySelector("#lastName").value = userDetail.lastName;
-				profileSettingContainer.querySelector("#email").value = userDetail.email;
-				profileSettingContainer.querySelector("#phone").value = userDetail.phone;
+			const [userProfile] = responseData.data;
+
+			if (userProfile) {
+				profileSettingContainer.querySelector("#firstName").value = userProfile.firstName;
+				profileSettingContainer.querySelector("#lastName").value = userProfile.lastName;
+				profileSettingContainer.querySelector("#email").value = userProfile.userId;
+				profileSettingContainer.querySelector("#phone").value = userProfile.phone;
 			} else {
 				throw new Error("Failed to load data. Please try again later.");
 			}

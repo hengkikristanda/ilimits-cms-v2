@@ -41,14 +41,84 @@ const create = async (req, res) => {
 	const { title, subHeading, footNote, ctaButtonLabel, ctaButtonLink, submitType, myTextArea } =
 		req.body;
 
-	const clientEndPoint = process.env.CONTENT_END_POINT + "promotion";
+	const clientEndPoint = process.env.CONTENT_END_POINT + "/promotion";
+
+	try {
+		let heroImageId;
+		if (req.file) {
+			console.log(req.file);
+			// const uploadImageResponse = await handlePostImage(
+			// 	req.file.filename,
+			// 	process.env.CONTENT_END_POINT + "/image/uploads/"
+			// );
+
+			// const uploadImageToWebResponse = await handlePostImage(
+			// 	req.file.filename,
+			// 	process.env.WEB_END_POINT + "uploads/publicImages/"
+			// );
+
+			// heroImageId = uploadImageResponse && uploadImageResponse.data[0].id;
+		}
+
+		const $ = cheerio.load(myTextArea);
+
+		$("img").each(function () {
+			const oldSrc = $(this).attr("src");
+			const newSrc = oldSrc.replace("../../assets/img/temp/", "/assets/img/temp/");
+			$(this).attr("src", newSrc);
+		});
+
+		$("a").each(function () {
+			const oldSrc = $(this).attr("href");
+			const newSrc = oldSrc.replace("../../assets/docs/", "/assets/docs/");
+			$(this).attr("href", newSrc);
+		});
+
+		const updatedHtml = $("body").html();
+
+		const requestBody = {
+			imageId: heroImageId,
+			heading: title,
+			subHeading,
+			footNote,
+			contentStatus: submitType,
+			textContent: updatedHtml,
+			ctaButtonLabel,
+			ctaButtonLink,
+			userId: req.user.id,
+		};
+
+		let config = {
+			method: "post",
+			maxBodyLength: Infinity,
+			url: clientEndPoint,
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(requestBody),
+		};
+
+		// const apiResponse = await fetch(clientEndPoint, config);
+
+		return res.status(200).json({ message: "OK" });
+	} catch (error) {
+		console.log(error);
+		return res.status(400).json({ message: "ERROR" });
+	}
+};
+
+/* const create = async (req, res) => {
+	const { title, subHeading, footNote, ctaButtonLabel, ctaButtonLink, submitType, myTextArea } =
+		req.body;
+
+	const clientEndPoint = process.env.CONTENT_END_POINT + "/promotion";
 
 	try {
 		let heroImageId;
 		if (req.file) {
 			const uploadImageResponse = await handlePostImage(
 				req.file.filename,
-				process.env.CONTENT_END_POINT + "image/uploads/"
+				process.env.CONTENT_END_POINT + "/image/uploads/"
 			);
 
 			const uploadImageToWebResponse = await handlePostImage(
@@ -104,8 +174,8 @@ const create = async (req, res) => {
 		console.log(error);
 		return res.status(400).json({ message: "ERROR" });
 	}
-
-	/* const { promotionTitle, promotionSubHeading, promotionFootNote, description } = req.body;
+ */
+/* const { promotionTitle, promotionSubHeading, promotionFootNote, description } = req.body;
 	const imagePath = req.file.path;
 
 	try {
@@ -124,7 +194,7 @@ const create = async (req, res) => {
 		console.log(error);
 		return res.status(500).json({ message: "Invalid Request" });
 	} */
-};
+// };
 
 const getAllContent = async (req, res) => {
 	const responseBody = new ResponseBody();
@@ -157,7 +227,7 @@ const deleteContent = async (req, res) => {
 		const contentId = req.params.contentId;
 
 		if (contentId) {
-			const clientEndPoint = process.env.CONTENT_END_POINT + "promotion/" + contentId;
+			const clientEndPoint = process.env.CONTENT_END_POINT + "/promotion/" + contentId;
 
 			let config = {
 				method: "delete",

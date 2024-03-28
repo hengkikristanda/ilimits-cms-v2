@@ -86,7 +86,10 @@ async function loadData() {
 						const fileNamePreview = document.createElement("a");
 						fileNamePreview.textContent = item.originalFileName;
 						fileNamePreview.target = "blank";
-						fileNamePreview.href = `/assets/docs/${item.fileName}`;
+
+						const encodedFileURL = `/assets/docs/${encodeURIComponent(item.fileName)}`;
+
+						fileNamePreview.href = encodedFileURL;
 						fileNamePreview.title = "Click to View The Document";
 
 						fileNameCol.classList.add("text-link");
@@ -95,7 +98,7 @@ async function loadData() {
 
 						const hrefCol = document.createElement("td");
 
-						hrefCol.textContent = `/assets/docs/${item.fileName}`;
+						hrefCol.textContent = encodedFileURL;
 						hrefCol.classList.add("col-wrap");
 						// hrefCol.classList.add("text-link");
 						hrefCol.title = "Click to Copy The URL";

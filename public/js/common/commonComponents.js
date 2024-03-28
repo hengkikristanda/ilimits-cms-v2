@@ -9,6 +9,11 @@ const MODAL_ACTION = {
 		ON_SUCCESS: "Successfully created",
 		ON_FAILED: "Failed to create",
 	},
+	UPDATE: {
+		INFO: "Updating...",
+		ON_SUCCESS: "Successfully Updated",
+		ON_FAILED: "Failed to update",
+	},
 };
 
 const MODAL_ALERT = {
@@ -219,7 +224,7 @@ async function alertModalComponent(itemId, itemName, modalAlert) {
 		`	<div class="flex flex-col py-6 px-2 items-center">`,
 		`		<h1 class="bi ${modalAlert.icon} ${modalAlert.style} text-6xl mb-8"></h1>`,
 		`		<h3 class="font-bold text-lg">${modalAlert.message}</h3>`,
-		`		<p class="my-4 break-all">${itemName}</p>`,
+		`		<p class="my-4 break-words text-red-500 font-bold">${itemName}</p>`,
 		`		<p class="font-semibold">${modalAlert.info}</p>`,
 		`	</div>`,
 		`	<form id="deleteConfirmationForm" method="dialog">`,

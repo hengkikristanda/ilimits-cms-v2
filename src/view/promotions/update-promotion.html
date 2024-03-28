@@ -28,6 +28,7 @@
 		<title>Content Management System | iLimits</title>
 	</head>
 	<body>
+		<div id="overlay"></div>
 		<div id="myContainer" class="myContainer mx-auto">
 			<nav id="navbar" class="sticky top-0 z-30 backdrop-blur-sm border-b border-gray-200"></nav>
 			<div class="stage-container">
@@ -98,6 +99,7 @@
 								<div class="form-block mb-20">
 									<h4>Promotion Detail</h4>
 									<div class="form-block-container flex-col">
+										<input type="hidden" id="contentId" />
 										<label>Title</label>
 										<input
 											id="title"
@@ -179,6 +181,7 @@
 				</div>
 			</dialog>
 		</div>
+		<dialog id="loadingModal" class="modal"></dialog>
 	</body>
 	<script src="/js/common/commonUtils.js"></script>
 	<script src="/js/common/commonComponents.js"></script>

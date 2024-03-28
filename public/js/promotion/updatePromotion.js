@@ -35,7 +35,9 @@ async function handlePreviewPromotion(targetForm) {
 async function handleSubmitContent(targetForm) {
 	try {
 		// const fileInput = targetForm.querySelector("#fileInput");
+		const contentId = targetForm.querySelector("#contentId");
 		const title = targetForm.querySelector("#title");
+		const attachedImage = targetForm.querySelector("#attachedImage");
 		const subHeading = targetForm.querySelector("#subHeading");
 		const footNote = targetForm.querySelector("#footNote");
 		const ctaButtonLabel = targetForm.querySelector("#ctaButtonLabel");
@@ -50,25 +52,32 @@ async function handleSubmitContent(targetForm) {
 
 		var formData = new FormData();
 
-		formData.append("heroImage", file); // Append the file
-		formData.append("title", title.value); // Append the file
-		formData.append("subHeading", subHeading.value); // Append the file
-		formData.append("footNote", footNote.value); // Append the file
-		formData.append("ctaButtonLabel", ctaButtonLabel.value); // Append the file
-		formData.append("ctaButtonLink", ctaButtonLink.value); // Append the file
-		formData.append("submitType", submitType.value); // Append the file
-		formData.append("myTextArea", tinymce.activeEditor.getContent()); // Append the file
+		formData.append("contentId", contentId.value);
+		formData.append("heroImage", file);
+		formData.append("attachedImage", attachedImage.value);
+		formData.append("title", title.value);
+		formData.append("subHeading", subHeading.value);
+		formData.append("footNote", footNote.value);
+		formData.append("ctaButtonLabel", ctaButtonLabel.value);
+		formData.append("ctaButtonLink", ctaButtonLink.value);
+		formData.append("submitType", submitType.value);
+		formData.append("myTextArea", tinymce.activeEditor.getContent());
 
 		const options = {
 			timeout: 30000,
-			method: "POST",
+			method: "PUT",
 			body: formData,
 		};
 
-		const response = await fetchWithTimeout("/crud/promotions", options);
-		if (!response.ok) {
-			throw new Error("errorResponseData.message");
-		}
+		const apiEndPoint = `/crud/promotions`;
+		const redirectPage = "/pages/promotions";
+
+		await sendRequest(apiEndPoint, options, MODAL_ACTION.UPDATE, redirectPage);
+
+		// const response = await fetchWithTimeout("/crud/promotions", options);
+		// if (!response.ok) {
+		// 	throw new Error("errorResponseData.message");
+		// }
 
 		/* 
 	
@@ -116,13 +125,11 @@ async function loadData(targetForm) {
 
 				const canvasImageContainer = targetForm.querySelector("#canvasImageContainer");
 
-				if (promotionData.imageFileName) {
-					promiseLoadImage("attachedImage", "/assets/img/temp/" + promotionData.imageFileName).then(
-						(loadedImage) => {
-							canvasImageContainer.appendChild(loadedImage.target);
-							handleCanvasAttachImage();
-						}
-					);
+				if (promotionData.heroImage) {
+					promiseLoadImage("attachedImage", promotionData.heroImage).then((loadedImage) => {
+						canvasImageContainer.appendChild(loadedImage.target);
+						handleCanvasAttachImage();
+					});
 				} else {
 					const img = new Image();
 					img.id = "attachedImage";
@@ -135,6 +142,9 @@ async function loadData(targetForm) {
 				if (loaderDiv) {
 					loaderDiv.remove();
 				}
+
+				const targetId = targetForm.querySelector("#contentId");
+				targetId.value = promotionData.id;
 
 				const title = targetForm.querySelector("#title");
 				title.value = promotionData.heading;

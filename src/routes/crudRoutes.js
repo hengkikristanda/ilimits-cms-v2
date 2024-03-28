@@ -38,6 +38,16 @@ const attachedStorage = multer.diskStorage({
 	},
 });
 
+const contentImageStorage = multer.diskStorage({
+	destination: (req, file, cb) => {
+		cb(null, "./public/assets/img/promotions/");
+	},
+	filename: (req, file, cb) => {
+		const fileName = Date.now() + "-" + file.originalname.replace(/ /g, "_");
+		cb(null, fileName);
+	},
+});
+
 const attachImageUploader = multer({
 	storage: attachedStorage,
 	limits: {
@@ -45,13 +55,12 @@ const attachImageUploader = multer({
 	},
 });
 
-// Promotion
-router.post(
-	"/promotions",
-	isAuthenticated,
-	attachImageUploader.single("heroImage"),
-	promotionController.create
-);
+const contentImageUploader = multer({
+	storage: contentImageStorage,
+	limits: {
+		fileSize: 1024 * 1024 * 5, // 5 MB limit
+	},
+});
 
 // USER
 router.get("/user/currentUser", isAuthenticated, userController.getCurrentUser);
@@ -60,6 +69,18 @@ router.get("/user/currentUser", isAuthenticated, userController.getCurrentUser);
 router.get("/client/subscriber", isAuthenticated, subscriberController.getAllSubscriber);
 
 // Promotion
+router.post(
+	"/promotions",
+	isAuthenticated,
+	attachImageUploader.single("heroImage"),
+	promotionController.create
+);
+router.put(
+	"/promotions",
+	isAuthenticated,
+	attachImageUploader.single("heroImage"),
+	promotionController.update
+);
 router.get("/content/promotion/:contentId?", isAuthenticated, promotionController.getAllContent);
 router.delete("/content/promotion/:contentId?", isAuthenticated, promotionController.deleteContent);
 
@@ -77,7 +98,7 @@ router.post(
 router.post(
 	"/uploads/attachedImage",
 	isAuthenticated,
-	attachImageUploader.single("attachImage"),
+	contentImageUploader.single("attachImage"),
 	uploadController.attachedImage
 );
 

@@ -42,6 +42,15 @@ app.use(
 		maxAge: 0, // Set the maximum age for caching (1 day in this case)
 	})
 );
+
+app.use((req, res, next) => {
+	// Check if the request is for a JavaScript file
+	if (path.extname(req.path).toLowerCase() === ".js") {
+		res.setHeader("Cache-Control", "public, max-age=0, must-revalidate");
+	}
+	next();
+});
+
 app.use((req, res, next) => {
 	res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
 	next();

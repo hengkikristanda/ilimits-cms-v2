@@ -41,43 +41,39 @@ const create = async (req, res) => {
 	const { title, subHeading, footNote, ctaButtonLabel, ctaButtonLink, submitType, myTextArea } =
 		req.body;
 
-	const clientEndPoint = process.env.CONTENT_END_POINT + "/promotion";
-
+	const clientEndPoint = process.env.CONTENT_END_POINT + "/promotions";
+	const responseBody = new ResponseBody();
 	try {
-		let heroImageId;
-		if (req.file) {
-			console.log(req.file);
-			// const uploadImageResponse = await handlePostImage(
-			// 	req.file.filename,
-			// 	process.env.CONTENT_END_POINT + "/image/uploads/"
-			// );
+		let heroImage = "/assets/img/promotions/1280x720_placeholder.PNG";
 
-			// const uploadImageToWebResponse = await handlePostImage(
-			// 	req.file.filename,
-			// 	process.env.WEB_END_POINT + "uploads/publicImages/"
-			// );
-
-			// heroImageId = uploadImageResponse && uploadImageResponse.data[0].id;
-		}
+		if (req.file) heroImage = `/assets/img/promotions/hero/${req.file.filename}`;
 
 		const $ = cheerio.load(myTextArea);
 
 		$("img").each(function () {
 			const oldSrc = $(this).attr("src");
-			const newSrc = oldSrc.replace("../../assets/img/temp/", "/assets/img/temp/");
+			// const newSrc = oldSrc.replace("../../assets/img/promotions/", "/assets/img/promotions/");
+			// $(this).attr("src", newSrc);
+
+			const newSrc = "/assets/img/promotions/" + getLastStringAfterSlash(oldSrc);
+			console.log(newSrc);
 			$(this).attr("src", newSrc);
 		});
 
 		$("a").each(function () {
 			const oldSrc = $(this).attr("href");
-			const newSrc = oldSrc.replace("../../assets/docs/", "/assets/docs/");
-			$(this).attr("href", newSrc);
+			// const newSrc = oldSrc.replace("../../assets/docs/", "/assets/docs/");
+
+			if (oldSrc.toLowerCase().includes("/assets/docs/")) {
+				const newSrc = "/assets/docs/" + getLastStringAfterSlash(oldSrc);
+				$(this).attr("href", newSrc);
+			}
 		});
 
 		const updatedHtml = $("body").html();
 
 		const requestBody = {
-			imageId: heroImageId,
+			heroImage,
 			heading: title,
 			subHeading,
 			footNote,
@@ -98,9 +94,97 @@ const create = async (req, res) => {
 			body: JSON.stringify(requestBody),
 		};
 
-		// const apiResponse = await fetch(clientEndPoint, config);
+		console.log("Sending POST request to: " + clientEndPoint);
+		const apiResponse = await fetch(clientEndPoint, config);
+		if (!apiResponse.ok) {
+			responseBody.isSuccess = false;
+			responseBody.responseMessage = "Failed to add new Promotion";
+			return res.status(500).json(responseBody);
+		}
 
-		return res.status(200).json({ message: "OK" });
+		responseBody.isSuccess = true;
+		responseBody.responseMessage = "Successfully add new Promotion";
+		return res.status(200).json(responseBody);
+	} catch (error) {
+		console.log(error);
+		return res.status(400).json({ message: "ERROR" });
+	}
+};
+
+const update = async (req, res) => {
+	const {
+		contentId,
+		title,
+		attachedImage,
+		subHeading,
+		footNote,
+		ctaButtonLabel,
+		ctaButtonLink,
+		submitType,
+		myTextArea,
+	} = req.body;
+
+	const responseBody = new ResponseBody();
+
+	const clientEndPoint = process.env.CONTENT_END_POINT + "/promotions";
+	try {
+		const $ = cheerio.load(myTextArea);
+
+		$("img").each(function () {
+			const oldSrc = $(this).attr("src");
+			// const newSrc = oldSrc.replace("../../assets/img/promotions/", "/assets/img/promotions/");
+			const newSrc = "/assets/img/promotions/" + getLastStringAfterSlash(oldSrc);
+			console.log(newSrc);
+			$(this).attr("src", newSrc);
+		});
+
+		$("a").each(function () {
+			const oldSrc = $(this).attr("href");
+			if (oldSrc.toLowerCase().includes("/assets/docs/")) {
+				const newSrc = "/assets/docs/" + getLastStringAfterSlash(oldSrc);
+				console.log(newSrc);
+				$(this).attr("href", newSrc);
+			}
+		});
+
+		const updatedHtml = $("body").html();
+
+		const requestBody = {
+			id: contentId,
+			heading: title,
+			subHeading,
+			footNote,
+			contentStatus: submitType,
+			textContent: updatedHtml,
+			ctaButtonLabel,
+			ctaButtonLink,
+			userId: req.user.id,
+		};
+
+		if (req.file) {
+			requestBody.heroImage = `/assets/img/promotions/hero/${req.file.filename}`;
+		}
+
+		let config = {
+			method: "put",
+			maxBodyLength: Infinity,
+			url: clientEndPoint,
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(requestBody),
+		};
+
+		const apiResponse = await fetch(clientEndPoint, config);
+		if (!apiResponse.ok) {
+			responseBody.isSuccess = false;
+			responseBody.responseMessage = "Failed to update Promotion";
+			return res.status(500).json(responseBody);
+		}
+
+		responseBody.isSuccess = true;
+		responseBody.responseMessage = "Successfully update Promotion";
+		return res.status(200).json(responseBody);
 	} catch (error) {
 		console.log(error);
 		return res.status(400).json({ message: "ERROR" });
@@ -200,23 +284,30 @@ const getAllContent = async (req, res) => {
 	const responseBody = new ResponseBody();
 	try {
 		const contentId = req.params.contentId;
-		const startIndex = req.params.startIndex || 0;
 
-		const response = await contentService.getAllContent(startIndex, contentId);
-		if (!response || !response.success) {
-			responseBody.responseMessage = "No Data Found";
-			return res.status(400).json(responseBody);
+		let response;
+		if (contentId) {
+			response = await contentService.getContentById(contentId);
+			if (!response || !response.success) {
+				responseBody.responseMessage = "No Data Found";
+				return res.status(400).json(responseBody);
+			}
+		} else {
+			const startIndex = req.params.startIndex || 0;
+			response = await contentService.getAllContent(startIndex, contentId);
+			if (!response || !response.success) {
+				responseBody.responseMessage = "No Data Found";
+				return res.status(400).json(responseBody);
+			}
 		}
 
 		responseBody.isSuccess = true;
 		responseBody.responseMessage = "Success";
-		responseBody.code = 200;
 		responseBody.objectData = response;
 		return res.status(200).json(responseBody);
 	} catch (error) {
 		console.error(error);
 		responseBody.responseMessage = error;
-		responseBody.statusCode = 500;
 		res.status(500).json(responseBody);
 	}
 };
@@ -237,7 +328,6 @@ const deleteContent = async (req, res) => {
 			const apiResponse = await fetch(clientEndPoint, config);
 			if (apiResponse.ok) {
 				responseBody.isSuccess = true;
-				responseBody.statusCode = 200;
 				responseBody.responseMessage = "Promotion Successfully deleted";
 				return res.status(200).json(responseBody);
 			}
@@ -250,7 +340,6 @@ const deleteContent = async (req, res) => {
 	} catch (error) {
 		console.error(error);
 		responseBody.responseMessage = error;
-		responseBody.statusCode = 500;
 		res.status(500).json(responseBody);
 	}
 };
@@ -262,6 +351,11 @@ async function exportImage(blob, fileName, mimeType) {
 	const externalApiUrl = "http://localhost:3200/api/upload";
 	const response = await axios.post(externalApiUrl, formData);
 	return response;
+}
+
+function getLastStringAfterSlash(path) {
+	const parts = path.split("/");
+	return parts.pop(); // Gets the last element after splitting by '/'
 }
 
 function getImageData(imagePath) {
@@ -277,4 +371,4 @@ function getImageData(imagePath) {
 	return { blob, fileName, mimeType };
 }
 
-module.exports = { create, getAllContent, deleteContent };
+module.exports = { create, update, getAllContent, deleteContent };

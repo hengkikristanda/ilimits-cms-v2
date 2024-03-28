@@ -116,7 +116,7 @@ const uploadFile = async (req, res) => {
 
 const attachedImage = async (req, res) => {
 	if (req.file) {
-		const fileUrl = `${req.protocol}://${req.get("host")}/assets/img/temp/${req.file.filename}`;
+		const fileUrl = `${req.protocol}://${req.get("host")}/assets/img/promotions/${req.file.filename}`;
 		res.json({ url: fileUrl });
 	} else {
 		return res.status(402).json({ message: "Failed to attach image" });

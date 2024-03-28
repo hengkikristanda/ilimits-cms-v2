@@ -142,7 +142,7 @@ const getCreatePromotionPage = async (req, res) => {
 
 const getUpdatePromotionPage = async (req, res) => {
 	try {
-		// const contentId = req.params.contentId;
+		const contentId = req.params.contentId;
 		const targetPage = path.join(__dirname, `../view/promotions/update-promotion.html`);
 		res.sendFile(targetPage);
 	} catch (error) {
